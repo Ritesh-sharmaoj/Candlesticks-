@@ -1,0 +1,8 @@
+{
+  "id": "inverted-hammer",
+  "name": "Inverted Hammer",
+  "type": "reversal",
+  "sentiment": "bullish",
+  "requiredCandles": 1,
+  "description": "Small body near the low with a long upper wick after a decline."
+}

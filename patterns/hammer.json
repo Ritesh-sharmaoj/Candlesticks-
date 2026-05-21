@@ -1,0 +1,8 @@
+{
+  "id": "hammer",
+  "name": "Hammer",
+  "type": "reversal",
+  "sentiment": "bullish",
+  "requiredCandles": 1,
+  "description": "Small body near the high with a long lower shadow after a decline."
+}

@@ -1,0 +1,8 @@
+{
+  "id": "gravestone-doji",
+  "name": "Gravestone Doji",
+  "type": "reversal",
+  "sentiment": "bearish",
+  "requiredCandles": 1,
+  "description": "Tiny body near the low with a long upper shadow, showing rejection of higher prices."
+}

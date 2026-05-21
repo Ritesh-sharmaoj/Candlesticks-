@@ -1,0 +1,16 @@
+{
+  "name": "candlesticks",
+  "version": "1.0.0",
+  "description": "Candlestick pattern learning desk and TypeScript detection engine.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "check:web": "node --check script.js",
+    "test": "npm run build && npm run check:web"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

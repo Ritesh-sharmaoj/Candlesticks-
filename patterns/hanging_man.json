@@ -1,0 +1,8 @@
+{
+  "id": "hanging-man",
+  "name": "Hanging Man",
+  "type": "reversal",
+  "sentiment": "bearish",
+  "requiredCandles": 1,
+  "description": "Hammer-shaped candle after an uptrend that warns of selling pressure."
+}

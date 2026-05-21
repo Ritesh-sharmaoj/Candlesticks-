@@ -1,0 +1,8 @@
+{
+  "id": "outside-bar",
+  "name": "Outside Bar",
+  "type": "indecision",
+  "sentiment": "neutral",
+  "requiredCandles": 2,
+  "description": "Current candle expands beyond both the high and low of the previous candle."
+}

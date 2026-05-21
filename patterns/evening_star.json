@@ -1,0 +1,8 @@
+{
+  "id": "evening-star",
+  "name": "Evening Star",
+  "type": "reversal",
+  "sentiment": "bearish",
+  "requiredCandles": 3,
+  "description": "Bullish candle, small pause candle, then bearish candle losing the midpoint."
+}

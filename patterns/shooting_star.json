@@ -1,0 +1,8 @@
+{
+  "id": "shooting-star",
+  "name": "Shooting Star",
+  "type": "reversal",
+  "sentiment": "bearish",
+  "requiredCandles": 1,
+  "description": "Small body near the low with a long upper shadow after an advance."
+}

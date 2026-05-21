@@ -1,0 +1,8 @@
+{
+  "id": "piercing-pattern",
+  "name": "Piercing Pattern",
+  "type": "reversal",
+  "sentiment": "bullish",
+  "requiredCandles": 2,
+  "description": "A bullish candle closes above the midpoint of the previous bearish candle."
+}

@@ -1,0 +1,8 @@
+{
+  "id": "bearish-engulfing",
+  "name": "Bearish Engulfing",
+  "type": "reversal",
+  "sentiment": "bearish",
+  "requiredCandles": 2,
+  "description": "A bearish candle body fully engulfs the previous bullish body."
+}

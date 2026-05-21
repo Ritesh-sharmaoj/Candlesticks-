@@ -1,0 +1,8 @@
+{
+  "id": "three-black-crows",
+  "name": "Three Black Crows",
+  "type": "reversal",
+  "sentiment": "bearish",
+  "requiredCandles": 3,
+  "description": "Three strong bearish candles with progressively lower closes."
+}

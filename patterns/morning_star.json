@@ -1,0 +1,8 @@
+{
+  "id": "morning-star",
+  "name": "Morning Star",
+  "type": "reversal",
+  "sentiment": "bullish",
+  "requiredCandles": 3,
+  "description": "Bearish candle, small pause candle, then bullish candle reclaiming the midpoint."
+}

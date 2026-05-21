@@ -1,0 +1,8 @@
+{
+  "id": "doji",
+  "name": "Doji",
+  "type": "indecision",
+  "sentiment": "neutral",
+  "requiredCandles": 1,
+  "description": "Open and close are nearly equal, showing indecision between buyers and sellers."
+}

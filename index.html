@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TraderPro Academy - Candlestick Trading Desk</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-section="candlesticksSection">
+    <header class="app-header">
+        <div class="brand">
+            <div class="brand-mark">TP</div>
+            <div>
+                <span class="eyebrow">Candlestick Trading Desk</span>
+                <strong>TraderPro Academy</strong>
+            </div>
+        </div>
+
+        <nav class="main-nav" aria-label="Primary navigation">
+            <button class="nav-tab active" data-section="candlesticksSection">Candlesticks</button>
+            <button class="nav-tab" data-section="chartPatternsSection">Chart Patterns</button>
+            <button class="nav-tab" data-section="indicatorsSection">Indicators</button>
+            <button class="nav-tab" data-section="strategiesSection">Playbooks</button>
+            <button class="nav-tab" data-section="calculatorsSection">Calculators</button>
+            <button class="nav-tab" data-section="roadmapSection">Roadmap</button>
+            <button class="nav-tab" data-section="glossarySection">Glossary</button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="overview-panel" aria-label="Trading desk overview">
+            <div class="overview-copy">
+                <span class="eyebrow">Price action, context, risk</span>
+                <h1>Professional candlestick learning desk for structured trading decisions.</h1>
+                <p>Study patterns with market psychology, confirmation logic, invalidation, position sizing, and execution checklists in one responsive workspace.</p>
+                <div class="quick-actions">
+                    <button id="quizBtn" class="primary-btn">Start Quiz</button>
+                    <button id="favsBtn" class="ghost-btn">Favorites <span id="favCount">0</span></button>
+                </div>
+            </div>
+
+            <div class="market-visual" aria-label="Sample candlestick chart">
+                <canvas id="marketCanvas"></canvas>
+                <div class="chart-caption">
+                    <span>Sample structure</span>
+                    <strong>Trend - Pullback - Breakout</strong>
+                </div>
+            </div>
+
+            <div class="desk-metrics" aria-label="Knowledge base summary">
+                <div class="metric-card">
+                    <span id="patternCount">0</span>
+                    <p>Candlestick patterns</p>
+                </div>
+                <div class="metric-card">
+                    <span id="chartPatternCount">0</span>
+                    <p>Chart patterns</p>
+                </div>
+                <div class="metric-card">
+                    <span id="indicatorCount">0</span>
+                    <p>Indicators</p>
+                </div>
+                <div class="metric-card">
+                    <span>1%</span>
+                    <p>Default risk rule</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tool-panel" aria-label="Search and filters">
+            <div class="search-box">
+                <label for="searchBar">Search</label>
+                <input type="search" id="searchBar" placeholder="Pattern, indicator, setup, psychology">
+            </div>
+            <div class="field candlestick-filter">
+                <label for="categoryFilter">Category</label>
+                <select id="categoryFilter">
+                    <option value="all">All categories</option>
+                    <option value="Single Candlestick">Single Candlestick</option>
+                    <option value="Double Candlestick">Double Candlestick</option>
+                    <option value="Triple Candlestick">Triple Candlestick</option>
+                    <option value="Bullish Reversal">Bullish Reversal</option>
+                    <option value="Bearish Reversal">Bearish Reversal</option>
+                    <option value="Continuation">Continuation</option>
+                    <option value="Indecision">Indecision</option>
+                </select>
+            </div>
+            <div class="field candlestick-filter">
+                <label for="sentimentFilter">Sentiment</label>
+                <select id="sentimentFilter">
+                    <option value="all">All sentiment</option>
+                    <option value="Bullish">Bullish</option>
+                    <option value="Bearish">Bearish</option>
+                    <option value="Neutral">Neutral</option>
+                </select>
+            </div>
+            <div class="field candlestick-filter">
+                <label for="difficultyFilter">Level</label>
+                <select id="difficultyFilter">
+                    <option value="all">All levels</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            <div class="mode-toggle candlestick-filter" aria-label="Learning mode">
+                <span>Beginner</span>
+                <label class="switch">
+                    <input type="checkbox" id="modeToggle">
+                    <span class="slider"></span>
+                </label>
+                <span>Advanced</span>
+            </div>
+        </section>
+
+        <section id="candlesticksSection" class="tab-content active">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Candlestick encyclopedia</span>
+                    <h2>Pattern psychology and trade execution</h2>
+                </div>
+                <p id="patternResultCount"></p>
+            </div>
+            <div id="patternGrid" class="grid"></div>
+        </section>
+
+        <section id="chartPatternsSection" class="tab-content">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Market structure</span>
+                    <h2>Visual chart pattern playbook</h2>
+                </div>
+                <p id="chartPatternResultCount"></p>
+            </div>
+            <div class="segmented" aria-label="Chart pattern filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="reversal">Reversal</button>
+                <button class="filter-btn" data-filter="continuation">Continuation</button>
+                <button class="filter-btn" data-filter="bilateral">Bilateral</button>
+            </div>
+            <div id="chartPatternGrid" class="grid chart-pattern-grid"></div>
+        </section>
+
+        <section id="indicatorsSection" class="tab-content">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Technical toolkit</span>
+                    <h2>Indicators, settings, and confirmation use</h2>
+                </div>
+            </div>
+            <div id="indicatorGrid" class="grid"></div>
+        </section>
+
+        <section id="strategiesSection" class="tab-content">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Trading playbooks</span>
+                    <h2>Repeatable setups, checklist, and journal discipline</h2>
+                </div>
+                <p id="readinessScore">Readiness: 0%</p>
+            </div>
+            <div class="split-layout">
+                <div id="strategyGrid" class="grid compact-grid"></div>
+                <aside class="checklist-panel">
+                    <h3>Pre-trade Checklist</h3>
+                    <div id="checklistItems" class="checklist"></div>
+                    <div class="journal-box">
+                        <label for="journalNote">Trade note</label>
+                        <textarea id="journalNote" rows="6" placeholder="Bias, trigger, invalidation, emotions"></textarea>
+                        <button id="saveJournalBtn" class="primary-btn">Save Note</button>
+                        <p id="journalStatus"></p>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="calculatorsSection" class="tab-content">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Risk lab</span>
+                    <h2>Position sizing, reward ratio, and compounding</h2>
+                </div>
+            </div>
+            <div class="calculator-grid">
+                <div class="calc-card">
+                    <h3>Position Size</h3>
+                    <div class="input-group">
+                        <label for="accBalance">Account balance</label>
+                        <input type="number" id="accBalance" value="10000" min="0" step="100">
+                    </div>
+                    <div class="input-group">
+                        <label for="riskPct">Risk per trade (%)</label>
+                        <input type="number" id="riskPct" value="1" min="0" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="entryPrice">Entry price</label>
+                        <input type="number" id="entryPrice" value="100" min="0" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="stopLossInput">Stop loss</label>
+                        <input type="number" id="stopLossInput" value="96" min="0" step="0.01">
+                    </div>
+                    <button id="calcPositionBtn" class="primary-btn">Calculate</button>
+                    <div id="calcResults" class="calc-results"></div>
+                </div>
+
+                <div class="calc-card">
+                    <h3>Risk Reward</h3>
+                    <div class="input-group">
+                        <label for="rrDirection">Direction</label>
+                        <select id="rrDirection">
+                            <option value="long">Long</option>
+                            <option value="short">Short</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="rrEntry">Entry</label>
+                        <input type="number" id="rrEntry" value="100" min="0" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="rrStop">Stop</label>
+                        <input type="number" id="rrStop" value="96" min="0" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="rrTarget">Target</label>
+                        <input type="number" id="rrTarget" value="112" min="0" step="0.01">
+                    </div>
+                    <button id="calcRrBtn" class="primary-btn">Calculate</button>
+                    <div id="rrResults" class="calc-results"></div>
+                </div>
+
+                <div class="calc-card">
+                    <h3>Compounding</h3>
+                    <div class="input-group">
+                        <label for="compoundCapital">Starting capital</label>
+                        <input type="number" id="compoundCapital" value="10000" min="0" step="100">
+                    </div>
+                    <div class="input-group">
+                        <label for="monthlyReturn">Monthly return (%)</label>
+                        <input type="number" id="monthlyReturn" value="3" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="compoundMonths">Months</label>
+                        <input type="number" id="compoundMonths" value="12" min="1" step="1">
+                    </div>
+                    <button id="calcCompoundBtn" class="primary-btn">Calculate</button>
+                    <div id="compoundResults" class="calc-results"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmapSection" class="tab-content">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Academy roadmap</span>
+                    <h2>From candles to complete trading process</h2>
+                </div>
+            </div>
+            <div id="roadmapList" class="roadmap-list"></div>
+        </section>
+
+        <section id="glossarySection" class="tab-content">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Trading vocabulary</span>
+                    <h2>Core terms every technical trader should know</h2>
+                </div>
+            </div>
+            <div id="glossaryGrid" class="grid compact-grid"></div>
+        </section>
+    </main>
+
+    <div id="patternModal" class="modal" role="dialog" aria-modal="true" aria-label="Detail view">
+        <div class="modal-content">
+            <button class="close" aria-label="Close modal">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <div id="quizModal" class="modal" role="dialog" aria-modal="true" aria-label="Pattern quiz">
+        <div class="modal-content quiz-content">
+            <button class="close-quiz" aria-label="Close quiz">&times;</button>
+            <div id="quizBody"></div>
+        </div>
+    </div>
+
+    <footer class="warning-banner">
+        Risk notice: Educational content only. Always use confirmation, predefined invalidation, and responsible position sizing.
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "id": "three-white-soldiers",
+  "name": "Three White Soldiers",
+  "type": "reversal",
+  "sentiment": "bullish",
+  "requiredCandles": 3,
+  "description": "Three strong bullish candles with progressively higher closes."
+}

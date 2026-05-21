@@ -1,0 +1,8 @@
+{
+  "id": "bearish-harami",
+  "name": "Bearish Harami",
+  "type": "reversal",
+  "sentiment": "bearish",
+  "requiredCandles": 2,
+  "description": "A small bearish candle forms inside the body of a prior bullish candle."
+}

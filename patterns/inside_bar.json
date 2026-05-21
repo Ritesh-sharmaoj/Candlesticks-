@@ -1,0 +1,8 @@
+{
+  "id": "inside-bar",
+  "name": "Inside Bar",
+  "type": "continuation",
+  "sentiment": "neutral",
+  "requiredCandles": 2,
+  "description": "Current candle range is fully contained inside the previous candle range."
+}
