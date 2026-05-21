@@ -132,7 +132,7 @@ const appState = {
     activeChartFilter: "all",
     advanced: false,
     favoritesOnly: false,
-    favorites: new Set(JSON.parse(localStorage.getItem("candleFavs") || "[]")),
+    favorites: new Set(readStoredArray("candleFavs")),
     quiz: null
 };
 
@@ -147,6 +147,7 @@ function init() {
     cacheDom();
     setupEvents();
     document.body.dataset.section = appState.activeSection;
+    syncActiveSection();
     renderAll();
     setupCalculators();
     drawMarketCanvas();
@@ -238,9 +239,17 @@ function renderAll() {
 function switchSection(sectionId) {
     appState.activeSection = sectionId;
     document.body.dataset.section = sectionId;
-    dom.tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.section === sectionId));
-    dom.tabContents.forEach((section) => section.classList.toggle("active", section.id === sectionId));
+    syncActiveSection();
     drawMarketCanvas();
+}
+
+function syncActiveSection() {
+    dom.tabs.forEach((tab) => {
+        const isActive = tab.dataset.section === appState.activeSection;
+        tab.classList.toggle("active", isActive);
+        tab.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+    dom.tabContents.forEach((section) => section.classList.toggle("active", section.id === appState.activeSection));
 }
 
 function renderCandlesticks() {
@@ -342,7 +351,7 @@ function renderGlossary() {
                 <h3>${item.term}</h3>
                 <p>${item.definition}</p>
             `;
-            card.addEventListener("click", () => showGenericModal({
+            activateCard(card, () => showGenericModal({
                 name: item.term,
                 description: item.definition,
                 category: "Glossary"
@@ -357,7 +366,7 @@ function createPatternCard(pattern) {
     const sentiment = sentimentClass(pattern.sentiment);
     card.className = `card pattern-card ${sentiment}`;
     card.innerHTML = `
-        <button class="favorite-btn ${appState.favorites.has(pattern.id) ? "active" : ""}" aria-label="Toggle favorite" title="Toggle favorite">${appState.favorites.has(pattern.id) ? "Saved" : "Save"}</button>
+        <button type="button" class="favorite-btn ${appState.favorites.has(pattern.id) ? "active" : ""}" aria-label="Toggle favorite" aria-pressed="${appState.favorites.has(pattern.id)}" title="Toggle favorite">${appState.favorites.has(pattern.id) ? "Saved" : "Save"}</button>
         <div class="mini-viz">${generateSVG(pattern.viz, sentiment, 118)}</div>
         <h3>${pattern.name}</h3>
         <div class="tag-row">
@@ -372,7 +381,7 @@ function createPatternCard(pattern) {
         </div>
     `;
 
-    card.addEventListener("click", () => showPatternModal(pattern));
+    activateCard(card, () => showPatternModal(pattern));
     const favoriteButton = card.querySelector(".favorite-btn");
     favoriteButton.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -398,7 +407,7 @@ function createKnowledgeCard(item, kind) {
             <span class="tag">${kind}</span>
         </div>
     `;
-    card.addEventListener("click", () => showGenericModal(item));
+    activateCard(card, () => showGenericModal(item));
     return card;
 }
 
@@ -421,8 +430,21 @@ function createChartPatternCard(pattern) {
             <div class="chart-analysis-row"><strong>Target</strong><span>${pattern.target}</span></div>
         </div>
     `;
-    card.addEventListener("click", () => showGenericModal(pattern));
+    activateCard(card, () => showGenericModal(pattern));
     return card;
+}
+
+function activateCard(card, onActivate) {
+    card.setAttribute("role", "button");
+    card.tabIndex = 0;
+    card.addEventListener("click", onActivate);
+    card.addEventListener("keydown", (event) => {
+        if (event.target.closest?.(".favorite-btn")) return;
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onActivate();
+        }
+    });
 }
 
 function showPatternModal(pattern) {
@@ -521,6 +543,31 @@ function getQuery() {
     return dom.searchInput.value.trim().toLowerCase();
 }
 
+function readStoredArray(key) {
+    try {
+        const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function readStorage(key, fallback = "") {
+    try {
+        return localStorage.getItem(key) || fallback;
+    } catch (error) {
+        return fallback;
+    }
+}
+
+function writeStorage(key, value) {
+    try {
+        localStorage.setItem(key, value);
+    } catch (error) {
+        // Local storage may be unavailable in strict privacy modes.
+    }
+}
+
 function emptyState(message) {
     const div = document.createElement("div");
     div.className = "empty-state";
@@ -534,14 +581,16 @@ function toggleFavorite(id) {
     } else {
         appState.favorites.add(id);
     }
-    localStorage.setItem("candleFavs", JSON.stringify([...appState.favorites]));
+    writeStorage("candleFavs", JSON.stringify([...appState.favorites]));
     updateFavCount();
     renderCandlesticks();
 }
 
 function toggleFavoritesView() {
     appState.favoritesOnly = !appState.favoritesOnly;
-    document.getElementById("favsBtn").classList.toggle("active", appState.favoritesOnly);
+    const favoritesButton = document.getElementById("favsBtn");
+    favoritesButton.classList.toggle("active", appState.favoritesOnly);
+    favoritesButton.setAttribute("aria-pressed", String(appState.favoritesOnly));
     switchSection("candlesticksSection");
     renderCandlesticks();
 }
@@ -658,7 +707,7 @@ function resultRows(rows) {
 
 function renderChecklist() {
     const checklist = document.getElementById("checklistItems");
-    const saved = JSON.parse(localStorage.getItem("tradeChecklist") || "[]");
+    const saved = readStoredArray("tradeChecklist");
     checklist.innerHTML = "";
     checklistItems.forEach((item, index) => {
         const label = document.createElement("label");
@@ -673,14 +722,14 @@ function renderChecklist() {
 function updateReadiness() {
     const checks = [...document.querySelectorAll("#checklistItems input")];
     const checked = checks.filter((input) => input.checked).map((input) => Number(input.dataset.index));
-    localStorage.setItem("tradeChecklist", JSON.stringify(checked));
+    writeStorage("tradeChecklist", JSON.stringify(checked));
     const score = checks.length ? Math.round((checked.length / checks.length) * 100) : 0;
     document.getElementById("readinessScore").textContent = `Readiness: ${score}%`;
 }
 
 function saveJournal() {
     const note = document.getElementById("journalNote").value.trim();
-    localStorage.setItem("tradeJournalNote", note);
+    writeStorage("tradeJournalNote", note);
     const status = document.getElementById("journalStatus");
     status.textContent = "Saved locally.";
     setTimeout(() => {
@@ -689,7 +738,7 @@ function saveJournal() {
 }
 
 function loadJournal() {
-    const note = localStorage.getItem("tradeJournalNote") || "";
+    const note = readStorage("tradeJournalNote");
     document.getElementById("journalNote").value = note;
 }
 
@@ -708,7 +757,7 @@ function renderQuizQuestion() {
             <span class="eyebrow">Pattern quiz</span>
             <h2>Score: ${quiz.score}/${quiz.total}</h2>
             <p class="info-section">Review the patterns you missed and repeat the quiz after studying confirmation rules.</p>
-            <button class="primary-btn" id="restartQuizBtn">Restart Quiz</button>
+            <button type="button" class="primary-btn" id="restartQuizBtn">Restart Quiz</button>
         `;
         document.getElementById("restartQuizBtn").addEventListener("click", startQuiz);
         return;
@@ -724,7 +773,7 @@ function renderQuizQuestion() {
         <h2>Identify this pattern</h2>
         <div class="candle-viz">${generateSVG(correct.viz, sentimentClass(correct.sentiment), 190)}</div>
         <div id="quizOptions">
-            ${options.map((option) => `<button class="quiz-option" data-id="${option.id}">${option.name}</button>`).join("")}
+            ${options.map((option) => `<button type="button" class="quiz-option" data-id="${option.id}">${option.name}</button>`).join("")}
         </div>
         <div id="quizFeedback" class="info-section"></div>
     `;
@@ -750,7 +799,7 @@ function answerQuiz(button) {
     feedback.innerHTML = `
         <h4>${isCorrect ? "Correct" : "Review"}</h4>
         <p>${quiz.current.name}: ${quiz.current.beginnerExplanation}</p>
-        <button class="primary-btn" id="nextQuizBtn">Next</button>
+        <button type="button" class="primary-btn" id="nextQuizBtn">Next</button>
     `;
     document.getElementById("nextQuizBtn").addEventListener("click", renderQuizQuestion);
 }

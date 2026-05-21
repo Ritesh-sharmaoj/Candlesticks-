@@ -1,6 +1,6 @@
 :root {
-    --bg: #f5f5f7;
-    --surface: rgba(255, 255, 255, 0.82);
+    --bg: #edf2f7;
+    --surface: rgba(255, 255, 255, 0.88);
     --surface-2: #ffffff;
     --surface-3: #edf1f7;
     --text: #1d1d1f;
@@ -8,11 +8,15 @@
     --faint: #8a8f98;
     --border: #d8dde6;
     --accent: #0071e3;
+    --accent-soft: rgba(0, 113, 227, 0.11);
+    --accent-warm: #b7791f;
     --accent-2: #5f6368;
     --bullish: #00a878;
     --bearish: #ff3b30;
     --neutral: #8e6b00;
-    --shadow: 0 18px 40px rgba(18, 25, 38, 0.08), 0 1px 0 rgba(255, 255, 255, 0.72) inset;
+    --ring: 0 0 0 4px rgba(0, 113, 227, 0.14);
+    --shadow: 0 18px 42px rgba(18, 25, 38, 0.09), 0 1px 0 rgba(255, 255, 255, 0.76) inset;
+    --shadow-soft: 0 10px 24px rgba(18, 25, 38, 0.07);
     --radius: 8px;
 }
 
@@ -29,8 +33,8 @@ body {
     min-height: 100vh;
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     background:
-        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.95), transparent 340px),
-        linear-gradient(135deg, #fbfbfd 0%, #eff2f7 48%, #dde3ee 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 36%),
+        linear-gradient(135deg, #fbfcff 0%, #eef3f8 48%, #dfe7f0 100%),
         var(--bg);
     color: var(--text);
 }
@@ -46,6 +50,15 @@ button {
     cursor: pointer;
 }
 
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.card:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+}
+
 .app-header {
     position: sticky;
     top: 0;
@@ -55,10 +68,10 @@ button {
     align-items: center;
     gap: 18px;
     padding: 14px clamp(16px, 3vw, 34px);
-    background: rgba(246, 247, 250, 0.82);
+    background: rgba(248, 250, 252, 0.88);
     border-bottom: 1px solid var(--border);
     backdrop-filter: blur(18px);
-    box-shadow: 0 12px 28px rgba(18, 25, 38, 0.06);
+    box-shadow: 0 10px 26px rgba(18, 25, 38, 0.05);
 }
 
 .brand {
@@ -73,12 +86,12 @@ button {
     place-items: center;
     width: 42px;
     height: 42px;
-    border: 1px solid rgba(0, 113, 227, 0.28);
+    border: 1px solid rgba(0, 113, 227, 0.26);
     border-radius: var(--radius);
-    background: linear-gradient(145deg, #ffffff, #dbe7f7);
+    background: linear-gradient(145deg, #ffffff, #dceaff);
     color: var(--accent);
     font-weight: 800;
-    box-shadow: 0 10px 24px rgba(0, 113, 227, 0.12);
+    box-shadow: var(--shadow-soft);
 }
 
 .brand strong {
@@ -112,9 +125,9 @@ button {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     color: var(--text);
-    background: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.78);
     white-space: nowrap;
-    transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .nav-tab {
@@ -127,6 +140,7 @@ button {
 .ghost-btn:hover {
     background: #ffffff;
     color: var(--text);
+    border-color: #c9d2df;
 }
 
 .nav-tab.active,
@@ -134,7 +148,7 @@ button {
     border-color: rgba(0, 113, 227, 0.42);
     background: #ffffff;
     color: var(--accent);
-    box-shadow: 0 10px 22px rgba(0, 113, 227, 0.12);
+    box-shadow: 0 9px 22px rgba(0, 113, 227, 0.13);
 }
 
 main {
@@ -145,7 +159,7 @@ main {
 
 .overview-panel {
     display: grid;
-    grid-template-columns: minmax(280px, 1fr) minmax(330px, 1.1fr);
+    grid-template-columns: minmax(300px, 0.95fr) minmax(360px, 1.05fr);
     gap: 20px;
     align-items: stretch;
 }
@@ -163,6 +177,19 @@ main {
     background: var(--surface);
     box-shadow: var(--shadow);
     backdrop-filter: blur(18px);
+}
+
+.overview-copy {
+    position: relative;
+    overflow: hidden;
+}
+
+.overview-copy::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--bullish), var(--accent-warm));
 }
 
 body:not([data-section="candlesticksSection"]) .overview-panel {
@@ -190,9 +217,10 @@ body[data-section="roadmapSection"] .tool-panel {
 .overview-copy h1 {
     max-width: 720px;
     margin: 10px 0 14px;
-    font-size: clamp(2rem, 4vw, 4.4rem);
-    line-height: 0.98;
+    font-size: clamp(2.05rem, 3.5vw, 3.8rem);
+    line-height: 1;
     letter-spacing: 0;
+    text-wrap: balance;
 }
 
 .overview-copy p {
@@ -220,10 +248,19 @@ body[data-section="roadmapSection"] .tool-panel {
     border-color: transparent;
     background: var(--accent);
     color: #fff;
+    box-shadow: 0 10px 22px rgba(0, 113, 227, 0.18);
 }
 
 .primary-btn:hover {
     background: #1683f3;
+    transform: translateY(-1px);
+}
+
+.ghost-btn.active,
+.ghost-btn[aria-pressed="true"] {
+    border-color: rgba(0, 113, 227, 0.38);
+    background: var(--accent-soft);
+    color: var(--accent);
 }
 
 .ghost-btn span {
@@ -240,6 +277,11 @@ body[data-section="roadmapSection"] .tool-panel {
     position: relative;
     min-height: 340px;
     overflow: hidden;
+    background:
+        linear-gradient(rgba(29, 29, 31, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29, 29, 31, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 246, 252, 0.94));
+    background-size: 100% 48px, 56px 100%, 100% 100%;
 }
 
 #marketCanvas {
@@ -260,9 +302,10 @@ body[data-section="roadmapSection"] .tool-panel {
     padding: 12px 14px;
     border: 1px solid rgba(255, 255, 255, 0.72);
     border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.82);
     color: var(--muted);
     backdrop-filter: blur(14px);
+    box-shadow: 0 8px 22px rgba(18, 25, 38, 0.08);
 }
 
 .chart-caption strong {
@@ -278,6 +321,7 @@ body[data-section="roadmapSection"] .tool-panel {
 
 .metric-card {
     padding: 16px;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .metric-card span {
@@ -285,6 +329,19 @@ body[data-section="roadmapSection"] .tool-panel {
     color: var(--text);
     font-size: 1.85rem;
     font-weight: 900;
+}
+
+.metric-card:nth-child(1) span,
+.metric-card:nth-child(3) span {
+    color: var(--accent);
+}
+
+.metric-card:nth-child(2) span {
+    color: var(--bullish);
+}
+
+.metric-card:nth-child(4) span {
+    color: var(--accent-warm);
 }
 
 .metric-card p {
@@ -299,6 +356,7 @@ body[data-section="roadmapSection"] .tool-panel {
     align-items: end;
     margin: 22px 0;
     padding: 14px;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .search-box,
@@ -323,10 +381,11 @@ textarea {
     min-height: 42px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.92);
     color: var(--text);
     outline: none;
     padding: 0 12px;
+    transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
 }
 
 textarea {
@@ -339,7 +398,8 @@ input:focus,
 select:focus,
 textarea:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+    box-shadow: var(--ring);
+    background: #ffffff;
 }
 
 .mode-toggle {
@@ -435,29 +495,60 @@ textarea:focus {
 
 .card {
     position: relative;
-    min-height: 230px;
+    min-height: 238px;
     padding: 18px;
     overflow: hidden;
-    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.9);
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
 }
 
 .card:hover {
     transform: translateY(-3px);
     border-color: rgba(0, 113, 227, 0.38);
     background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 20px 44px rgba(18, 25, 38, 0.11);
+}
+
+.pattern-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--accent);
+}
+
+.pattern-card.bullish::before {
+    background: var(--bullish);
+}
+
+.pattern-card.bearish::before {
+    background: var(--bearish);
+}
+
+.pattern-card.neutral::before {
+    background: var(--accent-warm);
 }
 
 .card h3 {
-    max-width: calc(100% - 42px);
+    max-width: 100%;
     margin: 10px 0 10px;
     font-size: 1.14rem;
     line-height: 1.28;
+}
+
+.pattern-card h3 {
+    max-width: calc(100% - 72px);
 }
 
 .card p {
     margin: 12px 0;
     color: var(--muted);
     line-height: 1.55;
+}
+
+.pattern-card p {
+    min-height: 48px;
 }
 
 .card-footer,
@@ -485,6 +576,7 @@ textarea:focus {
     color: var(--muted);
     font-size: 0.74rem;
     font-weight: 800;
+    max-width: 100%;
 }
 
 .sentiment-pill.bullish {
@@ -511,17 +603,22 @@ textarea:focus {
     top: 12px;
     display: grid;
     place-items: center;
-    width: 34px;
+    min-width: 54px;
     height: 34px;
+    padding: 0 9px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.9);
     color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+    box-shadow: 0 6px 16px rgba(18, 25, 38, 0.07);
 }
 
 .favorite-btn.active {
     border-color: rgba(0, 113, 227, 0.38);
-    color: var(--accent-2);
+    background: var(--accent-soft);
+    color: var(--accent);
 }
 
 .reliability-bars {
@@ -547,7 +644,11 @@ textarea:focus {
     place-items: center;
     border: 1px solid rgba(216, 221, 230, 0.9);
     border-radius: var(--radius);
-    background: linear-gradient(180deg, #fbfcff, #edf2f8);
+    background:
+        linear-gradient(rgba(29, 29, 31, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29, 29, 31, 0.03) 1px, transparent 1px),
+        linear-gradient(180deg, #fbfcff, #edf2f8);
+    background-size: 100% 32px, 42px 100%, 100% 100%;
 }
 
 .chart-pattern-grid {
@@ -689,6 +790,12 @@ textarea:focus {
     justify-content: space-between;
     gap: 12px;
     color: var(--muted);
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(216, 221, 230, 0.68);
+}
+
+.result-item:last-child {
+    border-bottom: 0;
 }
 
 .result-val {
@@ -857,6 +964,7 @@ textarea:focus {
     place-items: center;
     border: 1px dashed var(--border);
     border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.58);
     color: var(--muted);
     text-align: center;
     padding: 24px;
@@ -865,7 +973,7 @@ textarea:focus {
 .warning-banner {
     padding: 14px clamp(16px, 3vw, 34px);
     border-top: 1px solid rgba(0, 113, 227, 0.14);
-    background: rgba(255, 255, 255, 0.74);
+    background: rgba(255, 255, 255, 0.82);
     color: var(--muted);
     text-align: center;
     line-height: 1.5;
@@ -937,7 +1045,17 @@ body.modal-open {
     }
 
     .overview-copy h1 {
-        font-size: 2.15rem;
+        font-size: 2rem;
+    }
+
+    .overview-copy,
+    .card,
+    .tool-panel,
+    .metric-card,
+    .calc-card,
+    .checklist-panel,
+    .roadmap-item {
+        box-shadow: 0 10px 24px rgba(18, 25, 38, 0.08);
     }
 
     .tool-panel,
@@ -964,7 +1082,7 @@ body.modal-open {
 
     .market-visual,
     #marketCanvas {
-        min-height: 300px;
+        min-height: 280px;
     }
 
     .modal {
@@ -988,5 +1106,30 @@ body.modal-open {
 
     .card {
         min-height: 0;
+    }
+
+    .tag-row {
+        gap: 6px;
+    }
+
+    .favorite-btn {
+        right: 10px;
+        top: 10px;
+        min-width: 50px;
+        height: 32px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }

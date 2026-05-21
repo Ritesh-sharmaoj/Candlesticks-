@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TraderPro Academy - Candlestick Trading Desk</title>
+    <meta name="description" content="Interactive candlestick trading desk with pattern psychology, chart patterns, indicators, risk calculators, quizzes, and trading playbooks.">
+    <meta name="theme-color" content="#f8fafc">
+    <meta name="application-name" content="TraderPro Academy">
+    <meta property="og:title" content="TraderPro Academy - Candlestick Trading Desk">
+    <meta property="og:description" content="Study candlestick patterns, confirmations, risk rules, and execution playbooks in one responsive workspace.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="style.css">
 </head>
 <body data-section="candlesticksSection">
@@ -17,13 +24,13 @@
         </div>
 
         <nav class="main-nav" aria-label="Primary navigation">
-            <button class="nav-tab active" data-section="candlesticksSection">Candlesticks</button>
-            <button class="nav-tab" data-section="chartPatternsSection">Chart Patterns</button>
-            <button class="nav-tab" data-section="indicatorsSection">Indicators</button>
-            <button class="nav-tab" data-section="strategiesSection">Playbooks</button>
-            <button class="nav-tab" data-section="calculatorsSection">Calculators</button>
-            <button class="nav-tab" data-section="roadmapSection">Roadmap</button>
-            <button class="nav-tab" data-section="glossarySection">Glossary</button>
+            <button type="button" class="nav-tab active" data-section="candlesticksSection">Candlesticks</button>
+            <button type="button" class="nav-tab" data-section="chartPatternsSection">Chart Patterns</button>
+            <button type="button" class="nav-tab" data-section="indicatorsSection">Indicators</button>
+            <button type="button" class="nav-tab" data-section="strategiesSection">Playbooks</button>
+            <button type="button" class="nav-tab" data-section="calculatorsSection">Calculators</button>
+            <button type="button" class="nav-tab" data-section="roadmapSection">Roadmap</button>
+            <button type="button" class="nav-tab" data-section="glossarySection">Glossary</button>
         </nav>
     </header>
 
@@ -34,8 +41,8 @@
                 <h1>Professional candlestick learning desk for structured trading decisions.</h1>
                 <p>Study patterns with market psychology, confirmation logic, invalidation, position sizing, and execution checklists in one responsive workspace.</p>
                 <div class="quick-actions">
-                    <button id="quizBtn" class="primary-btn">Start Quiz</button>
-                    <button id="favsBtn" class="ghost-btn">Favorites <span id="favCount">0</span></button>
+                    <button type="button" id="quizBtn" class="primary-btn">Start Quiz</button>
+                    <button type="button" id="favsBtn" class="ghost-btn" aria-pressed="false">Favorites <span id="favCount">0</span></button>
                 </div>
             </div>
 
@@ -119,7 +126,7 @@
                     <span class="eyebrow">Candlestick encyclopedia</span>
                     <h2>Pattern psychology and trade execution</h2>
                 </div>
-                <p id="patternResultCount"></p>
+                <p id="patternResultCount" aria-live="polite"></p>
             </div>
             <div id="patternGrid" class="grid"></div>
         </section>
@@ -130,13 +137,13 @@
                     <span class="eyebrow">Market structure</span>
                     <h2>Visual chart pattern playbook</h2>
                 </div>
-                <p id="chartPatternResultCount"></p>
+                <p id="chartPatternResultCount" aria-live="polite"></p>
             </div>
             <div class="segmented" aria-label="Chart pattern filter">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="reversal">Reversal</button>
-                <button class="filter-btn" data-filter="continuation">Continuation</button>
-                <button class="filter-btn" data-filter="bilateral">Bilateral</button>
+                <button type="button" class="filter-btn active" data-filter="all">All</button>
+                <button type="button" class="filter-btn" data-filter="reversal">Reversal</button>
+                <button type="button" class="filter-btn" data-filter="continuation">Continuation</button>
+                <button type="button" class="filter-btn" data-filter="bilateral">Bilateral</button>
             </div>
             <div id="chartPatternGrid" class="grid chart-pattern-grid"></div>
         </section>
@@ -167,8 +174,8 @@
                     <div class="journal-box">
                         <label for="journalNote">Trade note</label>
                         <textarea id="journalNote" rows="6" placeholder="Bias, trigger, invalidation, emotions"></textarea>
-                        <button id="saveJournalBtn" class="primary-btn">Save Note</button>
-                        <p id="journalStatus"></p>
+                        <button type="button" id="saveJournalBtn" class="primary-btn">Save Note</button>
+                        <p id="journalStatus" aria-live="polite"></p>
                     </div>
                 </aside>
             </div>
@@ -200,7 +207,7 @@
                         <label for="stopLossInput">Stop loss</label>
                         <input type="number" id="stopLossInput" value="96" min="0" step="0.01">
                     </div>
-                    <button id="calcPositionBtn" class="primary-btn">Calculate</button>
+                    <button type="button" id="calcPositionBtn" class="primary-btn">Calculate</button>
                     <div id="calcResults" class="calc-results"></div>
                 </div>
 
@@ -225,7 +232,7 @@
                         <label for="rrTarget">Target</label>
                         <input type="number" id="rrTarget" value="112" min="0" step="0.01">
                     </div>
-                    <button id="calcRrBtn" class="primary-btn">Calculate</button>
+                    <button type="button" id="calcRrBtn" class="primary-btn">Calculate</button>
                     <div id="rrResults" class="calc-results"></div>
                 </div>
 
@@ -243,7 +250,7 @@
                         <label for="compoundMonths">Months</label>
                         <input type="number" id="compoundMonths" value="12" min="1" step="1">
                     </div>
-                    <button id="calcCompoundBtn" class="primary-btn">Calculate</button>
+                    <button type="button" id="calcCompoundBtn" class="primary-btn">Calculate</button>
                     <div id="compoundResults" class="calc-results"></div>
                 </div>
             </div>
@@ -288,6 +295,6 @@
         Risk notice: Educational content only. Always use confirmation, predefined invalidation, and responsible position sizing.
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
