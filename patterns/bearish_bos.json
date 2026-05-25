@@ -1,0 +1,8 @@
+{
+  "id": "bearish-bos",
+  "name": "Bearish Break of Structure (BOS)",
+  "type": "smc",
+  "sentiment": "bearish",
+  "requiredCandles": 1,
+  "description": "Price closes below a prior swing low, confirming bearish structure continuation."
+}

@@ -1,0 +1,8 @@
+{
+  "id": "bearish-liquidity-sweep",
+  "name": "Bearish Liquidity Sweep",
+  "type": "smc",
+  "sentiment": "bearish",
+  "requiredCandles": 1,
+  "description": "Price sweeps a prior swing high and closes back below it, suggesting a failed upside breakout."
+}

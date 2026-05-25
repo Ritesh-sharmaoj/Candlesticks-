@@ -1,0 +1,8 @@
+{
+  "id": "bearish-order-block",
+  "name": "Bearish Order Block",
+  "type": "smc",
+  "sentiment": "bearish",
+  "requiredCandles": 2,
+  "description": "The last bullish candle before strong bearish displacement marks a potential supply zone."
+}

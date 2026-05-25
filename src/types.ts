@@ -11,7 +11,7 @@ export type Trend = 'bullish' | 'bearish' | 'neutral';
 export interface PatternDefinition {
   id?: string;
   name: string;
-  type: 'reversal' | 'continuation' | 'indecision';
+  type: 'reversal' | 'continuation' | 'indecision' | 'smc';
   sentiment: Trend;
   requiredCandles: number;
   description: string;

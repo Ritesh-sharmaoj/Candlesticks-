@@ -1,0 +1,8 @@
+{
+  "id": "bullish-choch",
+  "name": "Bullish Change of Character (CHOCH)",
+  "type": "smc",
+  "sentiment": "bullish",
+  "requiredCandles": 1,
+  "description": "Price breaks above a prior swing high after bearish structure, warning that control may be shifting to buyers."
+}

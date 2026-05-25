@@ -1,0 +1,8 @@
+{
+  "id": "bearish-fvg",
+  "name": "Bearish Fair Value Gap (FVG)",
+  "type": "smc",
+  "sentiment": "bearish",
+  "requiredCandles": 3,
+  "description": "A three-candle downside imbalance where candle one low remains above candle three high."
+}

@@ -1,0 +1,8 @@
+{
+  "id": "bearish-choch",
+  "name": "Bearish Change of Character (CHOCH)",
+  "type": "smc",
+  "sentiment": "bearish",
+  "requiredCandles": 1,
+  "description": "Price breaks below a prior swing low after bullish structure, warning that control may be shifting to sellers."
+}

@@ -19,6 +19,13 @@ type CandleStats = {
   bodyRatio: number;
 };
 
+type MarketStructureDirection = 'up' | 'down' | 'neutral';
+
+type SwingPoint = {
+  index: number;
+  price: number;
+};
+
 export class PatternEngine {
   private patterns: PatternDefinition[] = [];
 
@@ -38,6 +45,18 @@ export class PatternEngine {
     'bearish-harami': ([previous, current], all, index) => this.detectBearishHarami(previous, current, all, index),
     'inside-bar': ([previous, current]) => this.detectInsideBar(previous, current),
     'outside-bar': ([previous, current]) => this.detectOutsideBar(previous, current),
+    'bullish-bos': (_window, all, index) => this.detectBreakOfStructure(all, index, 'bullish'),
+    'bearish-bos': (_window, all, index) => this.detectBreakOfStructure(all, index, 'bearish'),
+    'bullish-choch': (_window, all, index) => this.detectChangeOfCharacter(all, index, 'bullish'),
+    'bearish-choch': (_window, all, index) => this.detectChangeOfCharacter(all, index, 'bearish'),
+    'bullish-order-block': ([previous, current], all, index) => this.detectOrderBlock(previous, current, all, index, 'bullish'),
+    'bearish-order-block': ([previous, current], all, index) => this.detectOrderBlock(previous, current, all, index, 'bearish'),
+    'bullish-fvg': (candles) => this.detectFairValueGap(candles, 'bullish'),
+    'bearish-fvg': (candles) => this.detectFairValueGap(candles, 'bearish'),
+    'equal-highs': (_window, all, index) => this.detectEqualLiquidity(all, index, 'high'),
+    'equal-lows': (_window, all, index) => this.detectEqualLiquidity(all, index, 'low'),
+    'bullish-liquidity-sweep': (_window, all, index) => this.detectLiquiditySweep(all, index, 'bullish'),
+    'bearish-liquidity-sweep': (_window, all, index) => this.detectLiquiditySweep(all, index, 'bearish'),
     'morning-star': (candles, all, index) => this.detectMorningStar(candles, all, index),
     'evening-star': (candles, all, index) => this.detectEveningStar(candles, all, index),
     'three-white-soldiers': (candles) => this.detectThreeWhiteSoldiers(candles),
@@ -248,6 +267,174 @@ export class PatternEngine {
     return null;
   }
 
+  private detectBreakOfStructure(candles: Candle[], index: number, direction: 'bullish' | 'bearish'): Detection | null {
+    const previous = candles[index - 1];
+    const current = candles[index];
+    if (!previous || !current) return null;
+
+    const level = direction === 'bullish'
+      ? this.lastSwingHigh(candles, index)
+      : this.lastSwingLow(candles, index);
+    if (!level) return null;
+
+    const brokeLevel = direction === 'bullish'
+      ? previous.close <= level.price && current.close > level.price
+      : previous.close >= level.price && current.close < level.price;
+    if (!brokeLevel) return null;
+
+    const structure = this.structureDirection(candles, index);
+    if ((direction === 'bullish' && structure === 'down') || (direction === 'bearish' && structure === 'up')) {
+      return null;
+    }
+
+    const alignedStructure = direction === 'bullish' ? structure === 'up' : structure === 'down';
+    const displacement = this.hasDisplacement(candles, index, direction);
+    const confidence = Math.min(72 + (alignedStructure ? 12 : 0) + (displacement ? 6 : 0), 94);
+    const side = direction === 'bullish' ? 'above' : 'below';
+
+    return {
+      confidence,
+      reason: `Close broke ${side} prior swing level ${this.formatPrice(level.price)}, confirming a ${direction} break of structure.`
+    };
+  }
+
+  private detectChangeOfCharacter(candles: Candle[], index: number, direction: 'bullish' | 'bearish'): Detection | null {
+    const previous = candles[index - 1];
+    const current = candles[index];
+    if (!previous || !current) return null;
+
+    const structure = this.structureDirection(candles, index);
+    const requiredStructure = direction === 'bullish' ? 'down' : 'up';
+    if (structure !== requiredStructure) return null;
+
+    const level = direction === 'bullish'
+      ? this.lastSwingHigh(candles, index)
+      : this.lastSwingLow(candles, index);
+    if (!level) return null;
+
+    const shifted = direction === 'bullish'
+      ? previous.close <= level.price && current.close > level.price
+      : previous.close >= level.price && current.close < level.price;
+    if (!shifted) return null;
+
+    const displacement = this.hasDisplacement(candles, index, direction);
+    const confidence = Math.min(80 + (displacement ? 8 : 0), 94);
+    const side = direction === 'bullish' ? 'above' : 'below';
+
+    return {
+      confidence,
+      reason: `${direction} CHOCH: price closed ${side} ${this.formatPrice(level.price)} after a ${requiredStructure} structure phase.`
+    };
+  }
+
+  private detectOrderBlock(previous: Candle, current: Candle, all: Candle[], index: number, direction: 'bullish' | 'bearish'): Detection | null {
+    if (!previous || !current) return null;
+
+    const oppositeCandleBeforeDisplacement = direction === 'bullish'
+      ? this.isBearish(previous) && this.isBullish(current)
+      : this.isBullish(previous) && this.isBearish(current);
+    if (!oppositeCandleBeforeDisplacement) return null;
+
+    const stats = this.stats(current);
+    const averageRange = this.averageRange(all, index - 1, 5);
+    const strongDisplacement = stats.bodyRatio >= 0.5 && stats.range >= averageRange * 1.05;
+    if (!strongDisplacement) return null;
+
+    const lookbackStart = Math.max(0, index - 6);
+    const breaksLocalRange = direction === 'bullish'
+      ? current.close > this.highestHigh(all, lookbackStart, index - 1)
+      : current.close < this.lowestLow(all, lookbackStart, index - 1);
+    if (!breaksLocalRange) return null;
+
+    const zoneLow = direction === 'bullish' ? previous.low : previous.open;
+    const zoneHigh = direction === 'bullish' ? previous.open : previous.high;
+    const confidence = Math.min(78 + (this.hasDisplacement(all, index, direction) ? 6 : 0), 90);
+
+    return {
+      confidence,
+      reason: `Last ${direction === 'bullish' ? 'bearish' : 'bullish'} candle before displacement marks a potential ${direction} order block zone ${this.formatPrice(zoneLow)}-${this.formatPrice(zoneHigh)}.`
+    };
+  }
+
+  private detectFairValueGap(candles: Candle[], direction: 'bullish' | 'bearish'): Detection | null {
+    if (candles.length < 3) return null;
+
+    const [first, middle, current] = candles;
+    const middleStats = this.stats(middle);
+    const hasDirectionalDisplacement = direction === 'bullish'
+      ? this.isBullish(middle)
+      : this.isBearish(middle);
+    if (!hasDirectionalDisplacement || middleStats.bodyRatio < 0.45) return null;
+
+    const gapLow = direction === 'bullish' ? first.high : current.high;
+    const gapHigh = direction === 'bullish' ? current.low : first.low;
+    const hasGap = direction === 'bullish'
+      ? first.high < current.low
+      : first.low > current.high;
+    if (!hasGap) return null;
+
+    const gapSize = gapHigh - gapLow;
+    const averageRange = candles.reduce((sum, candle) => sum + this.stats(candle).range, 0) / candles.length;
+    if (gapSize < averageRange * 0.04) return null;
+
+    const confidence = Math.min(76 + (middleStats.bodyRatio >= 0.65 ? 8 : 0), 90);
+
+    return {
+      confidence,
+      reason: `${direction} fair value gap between ${this.formatPrice(gapLow)} and ${this.formatPrice(gapHigh)} after a displacement candle.`
+    };
+  }
+
+  private detectEqualLiquidity(candles: Candle[], index: number, side: 'high' | 'low'): Detection | null {
+    const current = candles[index];
+    if (!current) return null;
+
+    const swings = side === 'high'
+      ? this.swingHighsBefore(candles, index)
+      : this.swingLowsBefore(candles, index);
+    const tolerance = this.priceTolerance(candles, index);
+    const currentLevel = side === 'high' ? current.high : current.low;
+    const matchingSwing = [...swings]
+      .reverse()
+      .find((swing) => index - swing.index <= 30 && Math.abs(swing.price - currentLevel) <= tolerance);
+
+    if (!matchingSwing) return null;
+
+    const levelName = side === 'high' ? 'Equal highs' : 'Equal lows';
+    const confidence = Math.min(68 + Math.round((tolerance / Math.max(this.stats(current).range, Number.EPSILON)) * 10), 78);
+
+    return {
+      confidence,
+      reason: `${levelName} near ${this.formatPrice(matchingSwing.price)} create a visible liquidity pool.`
+    };
+  }
+
+  private detectLiquiditySweep(candles: Candle[], index: number, direction: 'bullish' | 'bearish'): Detection | null {
+    const previous = candles[index - 1];
+    const current = candles[index];
+    if (!previous || !current) return null;
+
+    const level = direction === 'bullish'
+      ? this.lastSwingLow(candles, index)
+      : this.lastSwingHigh(candles, index);
+    if (!level) return null;
+
+    const sweptAndRejected = direction === 'bullish'
+      ? current.low < level.price && current.close > level.price && previous.close >= level.price
+      : current.high > level.price && current.close < level.price && previous.close <= level.price;
+    if (!sweptAndRejected) return null;
+
+    const stats = this.stats(current);
+    const rejectionWick = direction === 'bullish' ? stats.lowerShadow : stats.upperShadow;
+    const confidence = Math.min(76 + (rejectionWick >= stats.range * 0.35 ? 8 : 0), 91);
+    const side = direction === 'bullish' ? 'low' : 'high';
+
+    return {
+      confidence,
+      reason: `Price swept prior swing ${side} ${this.formatPrice(level.price)} and closed back inside, suggesting a ${direction} liquidity sweep.`
+    };
+  }
+
   private detectMorningStar(candles: Candle[], all: Candle[], index: number): Detection | null {
     const [first, second, third] = candles;
     const firstStats = this.stats(first);
@@ -334,6 +521,126 @@ export class PatternEngine {
 
   private withTrendConfidence(base: number, candles: Candle[], index: number, direction: 'up' | 'down'): number {
     return this.trendInto(candles, index, direction) ? Math.min(base + 8, 95) : base;
+  }
+
+  private structureDirection(candles: Candle[], index: number): MarketStructureDirection {
+    const highs = this.swingHighsBefore(candles, index);
+    const lows = this.swingLowsBefore(candles, index);
+
+    if (highs.length < 2 || lows.length < 2) return 'neutral';
+
+    const latestHigh = highs[highs.length - 1];
+    const previousHigh = highs[highs.length - 2];
+    const latestLow = lows[lows.length - 1];
+    const previousLow = lows[lows.length - 2];
+
+    if (latestHigh.price > previousHigh.price && latestLow.price > previousLow.price) return 'up';
+    if (latestHigh.price < previousHigh.price && latestLow.price < previousLow.price) return 'down';
+    return 'neutral';
+  }
+
+  private lastSwingHigh(candles: Candle[], index: number): SwingPoint | null {
+    const highs = this.swingHighsBefore(candles, index);
+    return highs[highs.length - 1] ?? null;
+  }
+
+  private lastSwingLow(candles: Candle[], index: number): SwingPoint | null {
+    const lows = this.swingLowsBefore(candles, index);
+    return lows[lows.length - 1] ?? null;
+  }
+
+  private swingHighsBefore(candles: Candle[], index: number, left = 2, right = 1): SwingPoint[] {
+    const swings: SwingPoint[] = [];
+    const lastCandidate = index - right - 1;
+
+    for (let i = left; i <= lastCandidate; i += 1) {
+      const price = candles[i].high;
+      let isSwing = true;
+      for (let j = i - left; j <= i + right; j += 1) {
+        if (j !== i && candles[j].high >= price) {
+          isSwing = false;
+          break;
+        }
+      }
+      if (isSwing) swings.push({ index: i, price });
+    }
+
+    return swings;
+  }
+
+  private swingLowsBefore(candles: Candle[], index: number, left = 2, right = 1): SwingPoint[] {
+    const swings: SwingPoint[] = [];
+    const lastCandidate = index - right - 1;
+
+    for (let i = left; i <= lastCandidate; i += 1) {
+      const price = candles[i].low;
+      let isSwing = true;
+      for (let j = i - left; j <= i + right; j += 1) {
+        if (j !== i && candles[j].low <= price) {
+          isSwing = false;
+          break;
+        }
+      }
+      if (isSwing) swings.push({ index: i, price });
+    }
+
+    return swings;
+  }
+
+  private hasDisplacement(candles: Candle[], index: number, direction: 'bullish' | 'bearish'): boolean {
+    const candle = candles[index];
+    const stats = this.stats(candle);
+    const averageRange = this.averageRange(candles, index - 1, 6);
+    const directionalBody = direction === 'bullish' ? this.isBullish(candle) : this.isBearish(candle);
+
+    return directionalBody && stats.bodyRatio >= 0.5 && stats.range >= averageRange * 1.08;
+  }
+
+  private averageRange(candles: Candle[], endIndex: number, count: number): number {
+    const end = Math.min(Math.max(endIndex, 0), candles.length - 1);
+    const start = Math.max(0, end - count + 1);
+    const slice = candles.slice(start, end + 1);
+
+    if (!slice.length) return Number.EPSILON;
+
+    return slice.reduce((sum, candle) => sum + this.stats(candle).range, 0) / slice.length;
+  }
+
+  private highestHigh(candles: Candle[], startIndex: number, endIndex: number): number {
+    const start = Math.max(0, startIndex);
+    const end = Math.min(endIndex, candles.length - 1);
+    let highest = Number.NEGATIVE_INFINITY;
+
+    for (let i = start; i <= end; i += 1) {
+      highest = Math.max(highest, candles[i].high);
+    }
+
+    return highest;
+  }
+
+  private lowestLow(candles: Candle[], startIndex: number, endIndex: number): number {
+    const start = Math.max(0, startIndex);
+    const end = Math.min(endIndex, candles.length - 1);
+    let lowest = Number.POSITIVE_INFINITY;
+
+    for (let i = start; i <= end; i += 1) {
+      lowest = Math.min(lowest, candles[i].low);
+    }
+
+    return lowest;
+  }
+
+  private priceTolerance(candles: Candle[], index: number): number {
+    const current = candles[index];
+    const averageRange = this.averageRange(candles, index - 1, 8);
+
+    return Math.max(averageRange * 0.18, Math.abs(current.close) * 0.001, Number.EPSILON);
+  }
+
+  private formatPrice(value: number): string {
+    if (Number.isInteger(value)) return String(value);
+
+    return value.toFixed(4).replace(/0+$/, '').replace(/\.$/, '');
   }
 
   private slugify(value: string): string {

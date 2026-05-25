@@ -26,6 +26,7 @@
         <nav class="main-nav" aria-label="Primary navigation">
             <button type="button" class="nav-tab active" data-section="candlesticksSection">Candles</button>
             <button type="button" class="nav-tab" data-section="chartPatternsSection">Chart Patterns</button>
+            <button type="button" class="nav-tab" data-section="smcSection">SMC</button>
             <button type="button" class="nav-tab" data-section="indicatorsSection">Indicators</button>
             <button type="button" class="nav-tab" data-section="strategiesSection">Playbooks</button>
             <button type="button" class="nav-tab" data-section="calculatorsSection">Calculators</button>
@@ -68,8 +69,8 @@
                     <p>Indicators</p>
                 </div>
                 <div class="metric-card">
-                    <span>1%</span>
-                    <p>Default risk rule</p>
+                    <span id="smcCount">0</span>
+                    <p>SMC concepts</p>
                 </div>
             </div>
         </section>
@@ -146,6 +147,17 @@
                 <button type="button" class="filter-btn" data-filter="bilateral">Bilateral</button>
             </div>
             <div id="chartPatternGrid" class="grid chart-pattern-grid"></div>
+        </section>
+
+        <section id="smcSection" class="tab-content">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Smart Money Concepts</span>
+                    <h2>Structure, liquidity, imbalance, aur order-flow zones</h2>
+                </div>
+                <p id="smcResultCount" aria-live="polite"></p>
+            </div>
+            <div id="smcGrid" class="grid"></div>
         </section>
 
         <section id="indicatorsSection" class="tab-content">

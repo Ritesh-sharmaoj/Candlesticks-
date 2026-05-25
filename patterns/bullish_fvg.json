@@ -1,0 +1,8 @@
+{
+  "id": "bullish-fvg",
+  "name": "Bullish Fair Value Gap (FVG)",
+  "type": "smc",
+  "sentiment": "bullish",
+  "requiredCandles": 3,
+  "description": "A three-candle upside imbalance where candle one high remains below candle three low."
+}

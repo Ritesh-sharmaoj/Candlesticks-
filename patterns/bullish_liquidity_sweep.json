@@ -1,0 +1,8 @@
+{
+  "id": "bullish-liquidity-sweep",
+  "name": "Bullish Liquidity Sweep",
+  "type": "smc",
+  "sentiment": "bullish",
+  "requiredCandles": 1,
+  "description": "Price sweeps a prior swing low and closes back above it, suggesting a failed downside breakout."
+}

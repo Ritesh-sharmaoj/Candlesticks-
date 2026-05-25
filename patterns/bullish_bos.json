@@ -1,0 +1,8 @@
+{
+  "id": "bullish-bos",
+  "name": "Bullish Break of Structure (BOS)",
+  "type": "smc",
+  "sentiment": "bullish",
+  "requiredCandles": 1,
+  "description": "Price closes above a prior swing high, confirming bullish structure continuation."
+}

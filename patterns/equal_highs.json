@@ -1,0 +1,8 @@
+{
+  "id": "equal-highs",
+  "name": "Equal Highs Liquidity",
+  "type": "smc",
+  "sentiment": "neutral",
+  "requiredCandles": 1,
+  "description": "Multiple highs form near the same level, creating visible buy-side liquidity."
+}

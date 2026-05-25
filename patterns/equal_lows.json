@@ -1,0 +1,8 @@
+{
+  "id": "equal-lows",
+  "name": "Equal Lows Liquidity",
+  "type": "smc",
+  "sentiment": "neutral",
+  "requiredCandles": 1,
+  "description": "Multiple lows form near the same level, creating visible sell-side liquidity."
+}
