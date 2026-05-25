@@ -127,6 +127,133 @@ const checklistItems = [
     "Trade note is ready before execution"
 ];
 
+const hinglishCopy = {
+    patterns: {
+        "marubozu": { meaning: "Long body aur almost no shadows dikhate hain ki ek side ka pressure decisive tha.", beginnerExplanation: "Price ek direction me strongly chala, pullback bahut kam tha.", psychology: "Ek side ne poora session control kiya. Next candle batati hai move continue hoga ya exhaust.", rules: "Body total range ka kam se kam 80% ho, wicks tiny ya absent hon.", useCase: "Breakout strength, trend continuation, ya extremes par final exhaustion candle.", entry: "Marubozu high ya low ka break tab use karo jab woh structure ke saath align ho.", stopLoss: "Candle ke opposite end ke beyond ya nearest structure ke beyond.", target: "Next support/resistance, ya minimum 1:2 risk reward.", confirmation: "Volume expansion, range ke bahar clean close, aur immediate rejection na ho.", mistakes: "Resistance ke late stage par giant candle buy karna jab reward potential poor ho.", scenario: "Bullish Marubozu rising volume ke saath multi-day resistance ke upar close hota hai." },
+        "doji": { meaning: "Open aur close almost equal hote hain, yani market undecided hai.", beginnerExplanation: "Ye cross jaisa dikhta hai. Buyers aur sellers ka draw ho gaya.", psychology: "Dono sides ne control lene ki koshish ki, par close tak koi side control hold nahi kar payi.", rules: "Body total candle range ke comparison me bahut small honi chahiye.", useCase: "Pause signal, reversal warning, ya compression ke baad breakout trigger.", entry: "High ke upar ya low ke neeche close ka wait karo.", stopLoss: "Doji range ki opposite side.", target: "Nearest clean structure ya volatility-based target.", confirmation: "Doji ke baad strong follow-through candle.", mistakes: "Har Doji ko trend aur location ke bina reversal samajhna.", scenario: "Strong rally ke baad resistance par Doji appear hota hai." },
+        "long-legged-doji": { meaning: "Large upper aur lower shadows volatility dikhate hain, par commitment clear nahi hota.", beginnerExplanation: "Price dono directions me kaafi chala aur open ke paas close hua.", psychology: "Aggressive buyers aur sellers dono control hold karne me fail hue.", rules: "Tiny body middle ke paas ho, aur dono sides par long shadows hon.", useCase: "News exhaustion, range expansion, ya possible trend change.", entry: "Price range ke bahar break aur close kare tabhi trade karo.", stopLoss: "Aggressive traders ke liye range ke andar, conservative traders ke liye opposite extreme.", target: "ATR target ya next major liquidity area.", confirmation: "Volume ke saath breakout aur candle ke bahar close.", mistakes: "Market side choose karne se pehle range ke andar enter karna.", scenario: "Volatile session support aur resistance dono reject karke flat close karta hai." },
+        "dragonfly-doji": { meaning: "Long lower shadow aur high ke paas close lower prices ki rejection dikhate hain.", beginnerExplanation: "Sellers ne price niche push kiya, par buyers wapas upar le aaye.", psychology: "Selling pressure absorb hua aur buyers ne low defend kiya.", rules: "Tiny body high ke paas ho, upper wick little/no ho, aur lower shadow long ho.", useCase: "Support ya demand par bottom reversal.", entry: "Confirmation ke baad candle high ke upar.", stopLoss: "Lower shadow ke neeche.", target: "Next resistance ya at least 1:2 risk reward.", confirmation: "Bullish candle Dragonfly high ke upar close kare.", mistakes: "Support context ke bina range ke middle me use karna.", scenario: "Price prior low sweep karta hai aur support ke upar wapas close hota hai." },
+        "gravestone-doji": { meaning: "Long upper shadow aur low ke paas close higher prices ki rejection dikhate hain.", beginnerExplanation: "Buyers ne price upar push kiya, par sellers ne wapas niche la diya.", psychology: "Buyers resistance ke upar fail hue aur sellers ne control wapas le liya.", rules: "Tiny body low ke paas ho, lower wick little/no ho, aur upper shadow long ho.", useCase: "Resistance ya supply par top reversal.", entry: "Confirmation ke baad candle low ke neeche.", stopLoss: "Upper shadow ke upar.", target: "Next support ya liquidity pocket.", confirmation: "Bearish candle Gravestone low ke neeche close kare.", mistakes: "Nearby resistance ya trend exhaustion ke bina short karna.", scenario: "Price resistance ke upar break karke buyers trap karta hai aur wapas neeche close hota hai." },
+        "spinning-top": { meaning: "Small body aur visible shadows movement ke baad balance dikhate hain.", beginnerExplanation: "Market slow ho raha hai aur direction decide kar raha hai.", psychology: "Momentum cool ho raha hai, par reversal ka proof abhi enough nahi hai.", rules: "Small real body middle ke paas ho, upper aur lower shadows ke saath.", useCase: "Trend exhaustion warning ya consolidation marker.", entry: "Next candle high ya low break kare iska wait karo.", stopLoss: "Setup range ki opposite side.", target: "Nearest structure jahan reward positive ho.", confirmation: "Follow-through candle aur structure alignment.", mistakes: "Spinning top ko akela trade signal maan lena.", scenario: "Rally resistance ke paas several spinning tops banati hai." },
+        "hammer": { meaning: "Downtrend ke baad long lower shadow wali bullish reversal candle.", beginnerExplanation: "Market girne ki koshish karta hai, par buyers price wapas upar push karte hain.", psychology: "Support ke paas sellers control lose karte hain aur buyers rejection tail banate hain.", rules: "Lower shadow body se kam se kam two times ho, upper wick small ho, aur decline ke baad appear ho.", useCase: "Bottom formation, demand test, aur trend reversal setup.", entry: "Hammer high ke upar ya bullish confirmation close ke baad.", stopLoss: "Hammer low ke neeche.", target: "Next resistance, swing high, ya 1:2 risk reward.", confirmation: "Support zone, rising volume, aur bullish follow-through.", mistakes: "Uptrend me ise Hammer bolna; wahan context Hanging Man hota hai.", scenario: "Price 200 EMA me sell hota hai aur support par Hammer banata hai." },
+        "hanging-man": { meaning: "Uptrend ke top par Hammer-shaped candle weakness ki warning deti hai.", beginnerExplanation: "Shape Hammer jaisi hai, par top par ye fall ki warning de sakti hai.", psychology: "Session me large sell-off aaya, chahe bulls ne part recover kar liya.", rules: "Uptrend ke baad small body high ke paas ho aur lower shadow long ho.", useCase: "Resistance ke paas ya extended rallies ke baad top warning.", entry: "Bearish confirmation ke baad Hanging Man low ke neeche.", stopLoss: "Candle high ke upar.", target: "Nearest support ya prior breakout level.", confirmation: "Body ya low ke neeche bearish close.", mistakes: "Confirmation se pehle immediately short karna.", scenario: "Long rally supply zone ke neeche Hanging Man print karti hai." },
+        "inverted-hammer": { meaning: "Downtrend ke baad small body aur long upper shadow possible bottom signal dete hain.", beginnerExplanation: "Buyers ne upar push karne ki koshish ki. Confirmation batayegi ki woh strong hain ya nahi.", psychology: "Bulls ne supply test ki, sellers ne push back kiya, par selling momentum weak hua.", rules: "Small body low ke paas, long upper wick, aur decline ke baad appear ho.", useCase: "Reversal breakout se pehle early bottom warning.", entry: "Confirmation ke baad upper wick ke upar.", stopLoss: "Candle low ke neeche.", target: "Nearest resistance ya 1:2 risk reward.", confirmation: "Gap up, bullish close, ya structure reclaim.", mistakes: "Uptrend me ise Shooting Star se confuse karna.", scenario: "Falling market weekly demand level par Inverted Hammer banata hai." },
+        "shooting-star": { meaning: "Uptrend ke baad long upper wick wali bearish reversal candle.", beginnerExplanation: "Price upar shoot hua aur hard reject ho gaya.", psychology: "Buyers rally continue karna chahte the, par close tak sellers overpower kar gaye.", rules: "Small body low ke paas, upper shadow body se kam se kam two times, aur rally ke baad appear ho.", useCase: "Resistance par short setup ya liquidity sweep ke baad reversal.", entry: "Confirmation ke baad Shooting Star low ke neeche.", stopLoss: "Upper wick ke upar.", target: "Nearest support ya prior breakout zone.", confirmation: "Bearish follow-through candle ya failed breakout.", mistakes: "Jab neeche strong trend support ho tab short karna.", scenario: "Price previous high sweep karke resistance ke neeche close hota hai." },
+        "bullish-engulfing": { meaning: "Strong bullish candle previous bearish body ko fully cover karti hai.", beginnerExplanation: "Badi green candle previous red candle ko engulf kar leti hai.", psychology: "Sellers control me the, phir buyers ne decisively control le liya.", rules: "First candle bearish, second bullish, aur second body first body ko engulf kare.", useCase: "Support par reversal, pullback completion, ya breakout confirmation.", entry: "Engulfing candle high ke upar ya midpoint retest par.", stopLoss: "Engulfing candle low ke neeche.", target: "Recent swing high ya 1:2 risk reward.", confirmation: "Support confluence, volume expansion, aur market structure shift.", mistakes: "Itni large candle buy karna ki stop distance reward destroy kar de.", scenario: "Price demand retest karta hai aur volume ke saath bullish engulfing print hoti hai." },
+        "bearish-engulfing": { meaning: "Strong bearish candle previous bullish body ko fully cover karti hai.", beginnerExplanation: "Badi red candle previous green candle ko engulf kar leti hai.", psychology: "Buyers control me the, phir sellers ne session completely reverse kar diya.", rules: "First candle bullish, second bearish, aur second body first body ko engulf kare.", useCase: "Resistance par reversal, failed breakout, ya lower-high confirmation.", entry: "Engulfing candle low ke neeche ya midpoint retest par.", stopLoss: "Engulfing candle high ke upar.", target: "Recent swing low ya 1:2 risk reward.", confirmation: "Resistance confluence, volume expansion, aur support loss.", mistakes: "Major support me short karna jab target ke liye room na ho.", scenario: "Price supply zone reject karta hai aur bearish engulfing candle ke roop me close hota hai." },
+        "piercing-pattern": { meaning: "Bullish reversal jahan second candle first bearish candle ke midpoint ke upar close karti hai.", beginnerExplanation: "Green candle previous red candle ka half se zyada recover karti hai.", psychology: "Bears strong start karte hain, par buyers range ka important part reclaim kar lete hain.", rules: "Bearish candle ke baad bullish candle lower open kare aur candle one ke 50% ke upar close kare.", useCase: "Support par downtrend reversal warning.", entry: "Second candle high ke upar.", stopLoss: "Second candle low ke neeche.", target: "Nearest resistance ya 1:2 risk reward.", confirmation: "Bullish follow-through aur support hold.", mistakes: "Midpoint ke neeche close accept karna.", scenario: "Gap down reverse hota hai aur prior bearish candle ke andar deep close karta hai." },
+        "dark-cloud-cover": { meaning: "Bearish reversal jahan second candle prior bullish candle ke midpoint ke neeche close karti hai.", beginnerExplanation: "Red candle previous green candle ke half se zyada andar push karti hai.", psychology: "Bulls strong open karte hain, par sellers control wapas le lete hain.", rules: "Bullish candle ke baad bearish candle higher open kare aur candle one ke 50% ke neeche close kare.", useCase: "Resistance par ya overextended rally ke baad top reversal.", entry: "Second candle low ke neeche.", stopLoss: "Second candle high ke upar.", target: "Nearest support ya measured move.", confirmation: "Bearish follow-through aur failed reclaim.", mistakes: "50% penetration rule ignore karna.", scenario: "News par price gap up karta hai, phir previous green candle me sell off hota hai." },
+        "tweezer-bottom": { meaning: "Do candles almost same low reject karti hain, support dikhata hai.", beginnerExplanation: "Price same floor ko do baar test karta hai aur bounce hota hai.", psychology: "Sellers support todne ki do baar koshish karte hain aur fail hote hain.", rules: "Adjacent candles ke lows nearly equal hon, ideally decline ke baad.", useCase: "Support confirmation aur reversal trigger.", entry: "Confirmation ke baad pair high ke upar.", stopLoss: "Shared low ke neeche.", target: "Next resistance.", confirmation: "Pair range ke upar bullish close.", mistakes: "Noise ke andar random equal lows use karna.", scenario: "Do candles demand zone ko same price par reject karti hain." },
+        "tweezer-top": { meaning: "Do candles almost same high reject karti hain, resistance dikhata hai.", beginnerExplanation: "Price same ceiling ko do baar touch karta hai aur girta hai.", psychology: "Buyers resistance todne ki do baar koshish karte hain aur fail hote hain.", rules: "Adjacent candles ke highs nearly equal hon, ideally rally ke baad.", useCase: "Resistance confirmation aur reversal trigger.", entry: "Confirmation ke baad pair low ke neeche.", stopLoss: "Shared high ke upar.", target: "Next support.", confirmation: "Pair range ke neeche bearish close.", mistakes: "Jab highs close na hon tab pattern force karna.", scenario: "Price supply zone ko do baar tap karta hai aur dono attempts reject hote hain." },
+        "morning-star": { meaning: "Three-candle bullish reversal: strong bearish candle, pause, phir strong bullish recovery.", beginnerExplanation: "Red candle, small pause, phir strong green candle.", psychology: "Bearish control indecision me fade hota hai, phir buyers control lete hain.", rules: "Large bearish candle, small middle candle, aur bullish candle candle one ke midpoint ke upar close kare.", useCase: "Demand par major bottom reversal.", entry: "Third candle high ke upar.", stopLoss: "Pattern low ke neeche.", target: "Previous swing high ya major resistance.", confirmation: "Third candle strong close kare to confirmation milti hai.", mistakes: "Weak third candle accept karna jo midpoint reclaim nahi karti.", scenario: "Downtrend support low sweep karne ke baad Morning Star banata hai." },
+        "evening-star": { meaning: "Three-candle bearish reversal: strong bullish candle, pause, phir strong bearish breakdown.", beginnerExplanation: "Green candle, small pause, phir strong red candle.", psychology: "Bullish control indecision me fade hota hai, phir sellers control lete hain.", rules: "Large bullish candle, small middle candle, aur bearish candle candle one ke midpoint ke neeche close kare.", useCase: "Supply par major top reversal.", entry: "Third candle low ke neeche.", stopLoss: "Pattern high ke upar.", target: "Previous swing low ya major support.", confirmation: "Third candle strong close kare to pattern confirm hota hai.", mistakes: "Preceding uptrend ke bina trade karna.", scenario: "Parabolic rally resistance ke neeche Evening Star ke saath end hoti hai." },
+        "three-white-soldiers": { meaning: "Teen strong bullish candles aggressive demand dikhati hain.", beginnerExplanation: "Teen green candles in a row strong buying dikhati hain.", psychology: "Buyers several sessions tak higher prices pay karne ko ready hain.", rules: "Teen bullish candles higher closes aur small wicks ke saath.", useCase: "Trend reversal confirmation ya consolidation ke baad continuation.", entry: "Controlled pullback par ya third candle high ke upar.", stopLoss: "First soldier low ke neeche ya pullback structure ke neeche.", target: "Next major resistance.", confirmation: "Volume support aur moving averages se overly extended na ho.", mistakes: "Move already stretched hone ke baad buy karna.", scenario: "Range teen strong bullish closes ke saath upward break hoti hai." },
+        "three-black-crows": { meaning: "Teen strong bearish candles aggressive supply dikhati hain.", beginnerExplanation: "Teen red candles in a row strong selling dikhati hain.", psychology: "Sellers several sessions tak lower prices accept karne ko ready hain.", rules: "Teen bearish candles lower closes aur small wicks ke saath.", useCase: "Bearish reversal confirmation ya failed rally ke baad continuation.", entry: "Controlled bounce par ya third candle low ke neeche.", stopLoss: "First crow high ke upar ya pullback structure ke upar.", target: "Next major support.", confirmation: "Volume support aur moving averages se bahut zyada extended na ho.", mistakes: "Sell-off already exhausted hone ke baad short karna.", scenario: "Failed breakout teen strong bearish closes me turn hota hai." },
+        "inside-bar": { meaning: "Smaller candle previous candle range ke andar contained hoti hai.", beginnerExplanation: "Small candle badi candle ke andar baithi hai aur breakout ka wait karti hai.", psychology: "Volatility contract hoti hai jab traders direction ka wait karte hain.", rules: "Current high previous high se neeche aur current low previous low se upar ho.", useCase: "Trend continuation, breakout, aur compression plays.", entry: "Mother bar high ya low ka break.", stopLoss: "Mother bar ya inside bar ki opposite side.", target: "Measured range ya next structure.", confirmation: "Mother bar range ke bahar close.", mistakes: "Choppy, low-quality ranges me inside bars trade karna.", scenario: "Strong trend candle ke baad continuation se pehle inside bar form hota hai." },
+        "outside-bar": { meaning: "Candle previous candle high aur low ke beyond expand karti hai.", beginnerExplanation: "Ek candle previous candle ki poori range cover kar leti hai.", psychology: "Volatility expand hoti hai aur dono sides par traps ban sakte hain.", rules: "Current high previous high se upar aur current low previous low se neeche ho.", useCase: "Volatility breakout ya failed move ke baad reversal.", entry: "Direction bias ke saath outside bar high ya low ka break.", stopLoss: "Outside bar ki opposite side.", target: "ATR target ya nearby liquidity.", confirmation: "Ek extreme ke paas strong close.", mistakes: "Oversized outside bars use karna jahan stop distance huge ho.", scenario: "News outside bar create karti hai jo low ke paas close hota hai." },
+        "harami-bullish": { meaning: "Prior bearish body ke andar small bullish candle seller fatigue signal karti hai.", beginnerExplanation: "Badi red candle ke andar small green candle form hoti hai.", psychology: "Selling pressure pause hota hai aur buyers supply absorb karna start karte hain.", rules: "Large bearish candle ke baad small bullish candle uski body ke andar ho.", useCase: "Pullback ke baad early reversal warning.", entry: "Mother candle high ke upar ya confirmation ke baad.", stopLoss: "Mother candle low ke neeche.", target: "Next resistance ya 1:1.5 risk reward.", confirmation: "Small candle ke upar bullish close.", mistakes: "Strong downtrend me confirmation se pehle entry lena.", scenario: "Bearish pullback demand par Bullish Harami ke saath stall hota hai." },
+        "harami-bearish": { meaning: "Prior bullish body ke andar small bearish candle buyer fatigue signal karti hai.", beginnerExplanation: "Badi green candle ke andar small red candle form hoti hai.", psychology: "Buying pressure pause hota hai aur sellers demand absorb karna start karte hain.", rules: "Large bullish candle ke baad small bearish candle uski body ke andar ho.", useCase: "Rally ke baad early reversal warning.", entry: "Mother candle low ke neeche ya confirmation ke baad.", stopLoss: "Mother candle high ke upar.", target: "Next support ya 1:1.5 risk reward.", confirmation: "Small candle ke neeche bearish close.", mistakes: "Strong uptrend me confirmation se pehle entry lena.", scenario: "Rally supply par Bearish Harami ke saath stall hoti hai." },
+        "pin-bar": { meaning: "Long tail level rejection aur possible reversal dikhati hai.", beginnerExplanation: "Price level ke beyond poke karta hai aur snap back hota hai.", psychology: "Key level ke beyond ek side trap hoti hai, phir opposite side control leti hai.", rules: "Tail candle range ki kam se kam two-thirds ho, body opposite end ke paas ho.", useCase: "Support/resistance se reversal, especially liquidity sweep ke baad.", entry: "Candle nose ka break ya 50% retracement entry.", stopLoss: "Tail ke beyond.", target: "Recent swing point ya clean liquidity area.", confirmation: "Structure location aur volume ke saath tail rejection.", mistakes: "Pin bars ko beech market me trade karna.", scenario: "Bullish pin bar prior low sweep karta hai aur support ke upar close hota hai." },
+        "railway-track": { meaning: "Similar-sized opposite candles fast sentiment flip dikhati hain.", beginnerExplanation: "Strong candle ko immediately similar opposite candle reverse kar deti hai.", psychology: "First side overcommit karti hai, phir opposite side move wapas le leti hai.", rules: "Do long opposite-colored candles similar body size ke saath.", useCase: "Clear support ya resistance par fast reversals.", entry: "Second candle ka break reversal direction me.", stopLoss: "Two-candle extreme ke beyond.", target: "Fixed reward ya nearest liquidity.", confirmation: "Second candle close aur structure confluence.", mistakes: "Small candles use karna jo true rejection nahi dikhati.", scenario: "Support me bearish candle ko bullish candle fully answer karti hai." },
+        "three-inside-up": { meaning: "Confirmed Bullish Harami jisme third candle breakout deti hai.", beginnerExplanation: "Red, small green inside, phir green breakout.", psychology: "Sellers pause karte hain, buyers enter karte hain, phir control prove karte hain.", rules: "Bearish candle, bullish Harami, aur third bullish candle candle one high ke upar close kare.", useCase: "Safer bullish reversal entry.", entry: "Third candle close par ya breakout retest par.", stopLoss: "Pattern low ke neeche.", target: "Next resistance ya 1:2 risk reward.", confirmation: "Candle three se already confirmed.", mistakes: "Candle three close hone se pehle entry lena.", scenario: "Pullback ke end par Three Inside Up complete hota hai." },
+        "three-inside-down": { meaning: "Confirmed Bearish Harami jisme third candle breakdown deti hai.", beginnerExplanation: "Green, small red inside, phir red breakdown.", psychology: "Buyers pause karte hain, sellers enter karte hain, phir control prove karte hain.", rules: "Bullish candle, bearish Harami, aur third bearish candle candle one low ke neeche close kare.", useCase: "Safer bearish reversal entry.", entry: "Third candle close par ya breakdown retest par.", stopLoss: "Pattern high ke upar.", target: "Next support ya 1:2 risk reward.", confirmation: "Candle three se already confirmed.", mistakes: "Candle three close hone se pehle entry lena.", scenario: "Double top ke neeche Three Inside Down complete hota hai." },
+        "rising-three-methods": { meaning: "Strong candle range ke andar brief pullback ke saath bullish continuation pattern.", beginnerExplanation: "Big green, small pullback candles, phir another green breakout.", psychology: "Bears pause create karne ki koshish karte hain par prior bullish range tod nahi paate.", rules: "Long bullish candle, uske andar three small bearish candles, phir bullish breakout.", useCase: "Strong uptrends me add-on setup.", entry: "Fifth candle high ke upar.", stopLoss: "Pattern low ke neeche.", target: "Trend extension ya next resistance.", confirmation: "Fifth candle strongly close kare.", mistakes: "Middle candles accept karna jo first candle low ke neeche break kar jati hain.", scenario: "Strong uptrend three candles rest karta hai aur phir continue hota hai." },
+        "falling-three-methods": { meaning: "Strong bearish candle range ke andar brief bounce ke saath bearish continuation pattern.", beginnerExplanation: "Big red, small bounce candles, phir another red breakdown.", psychology: "Bulls pause create karne ki koshish karte hain par prior bearish range tod nahi paate.", rules: "Long bearish candle, uske andar three small bullish candles, phir bearish breakdown.", useCase: "Strong downtrends me add-on setup.", entry: "Fifth candle low ke neeche.", stopLoss: "Pattern high ke upar.", target: "Trend extension ya next support.", confirmation: "Fifth candle strongly close kare.", mistakes: "Middle candles accept karna jo first candle high ke upar break kar jati hain.", scenario: "Strong downtrend three candles rest karta hai aur phir continue hota hai." },
+        "abandoned-baby-bullish": { meaning: "Decline ke baad Doji ke around gaps ke saath rare bottom reversal.", beginnerExplanation: "Falling market Doji par gap down karta hai, phir gap up karke reverse hota hai.", psychology: "Sellers exhaust hote hain aur buyers urgency ke saath control wapas lete hain.", rules: "Bearish candle, gap down Doji, gap up bullish candle.", useCase: "Jahan gaps meaningful hon wahan major reversal.", entry: "Bullish confirmation candle ke upar.", stopLoss: "Doji low ke neeche.", target: "Prior supply ya measured range.", confirmation: "Gaps open rahen aur volume reversal support kare.", mistakes: "24-hour markets me force karna jahan gaps rare hote hain.", scenario: "Stock panic me gap down karta hai aur next session gap up hota hai." },
+        "abandoned-baby-bearish": { meaning: "Rally ke baad Doji ke around gaps ke saath rare top reversal.", beginnerExplanation: "Rally Doji par gap up karti hai, phir gap down karke reverse hoti hai.", psychology: "Buyers exhaust hote hain aur sellers urgency ke saath control wapas lete hain.", rules: "Bullish candle, gap up Doji, gap down bearish candle.", useCase: "Jahan gaps meaningful hon wahan major reversal.", entry: "Bearish confirmation candle ke neeche.", stopLoss: "Doji high ke upar.", target: "Prior demand ya measured range.", confirmation: "Gaps open rahen aur volume reversal support kare.", mistakes: "Continuous crypto ya forex sessions me force karna.", scenario: "Stock euphoria me gap up karta hai aur next session gap down hota hai." },
+        "kicker-bullish": { meaning: "Sudden gap aur opposite candle sharp bullish sentiment shift mark karte hain.", beginnerExplanation: "Market red se immediately strong green me flip hota hai.", psychology: "Major catalyst positioning change karta hai aur sellers trap ho jate hain.", rules: "Bearish candle ke baad bullish candle prior open ke upar gap ke saath open ho.", useCase: "News-driven trend shift aur institutional repricing.", entry: "Bullish Kicker close ke baad ya controlled retest par.", stopLoss: "Kicker candle low ke neeche.", target: "Measured gap extension ya next resistance.", confirmation: "High volume aur immediate gap fill na ho.", mistakes: "Gap se bahut upar poor reward ke saath chase karna.", scenario: "Earnings gap resistance ke upar bullish Kicker create karta hai." },
+        "kicker-bearish": { meaning: "Sudden gap aur opposite candle sharp bearish sentiment shift mark karte hain.", beginnerExplanation: "Market green se immediately strong red me flip hota hai.", psychology: "Major catalyst positioning change karta hai aur buyers trap ho jate hain.", rules: "Bullish candle ke baad bearish candle prior open ke neeche gap ke saath open ho.", useCase: "News-driven trend shift aur institutional repricing.", entry: "Bearish Kicker close ke baad ya controlled retest par.", stopLoss: "Kicker candle high ke upar.", target: "Measured gap extension ya next support.", confirmation: "High volume aur immediate gap fill na ho.", mistakes: "Move already bahut travel kar chuka ho tab short karna.", scenario: "Bad guidance support ke neeche bearish Kicker create karta hai." }
+    },
+    chartPatterns: {
+        "head-shoulders": { structure: "Left shoulder, higher head, weaker right shoulder, aur neckline support.", description: "Distribution pattern jahan buyers final rally sustain nahi kar paate.", psychology: "Buyers ek last higher high banate hain, par right shoulder dikhata hai demand weak ho chuki hai.", entry: "Neckline ke neeche close ya neckline ka failed retest.", stopLoss: "Right shoulder ke upar ya failed retest high ke upar.", target: "Head-to-neckline distance breakdown ke neeche project karo.", confirmation: "Breakdown par rising volume aur neckline loss se pehle lower high.", invalidation: "Neckline ke upar clean close.", mistake: "Neckline break hone se pehle short karna." },
+        "inverse-head-shoulders": { structure: "Left shoulder, deeper head, higher right shoulder, aur neckline resistance.", description: "Accumulation pattern jahan sellers downtrend continue nahi kar paate.", psychology: "Sellers new low banate hain, phir right shoulder par same pressure repeat nahi kar paate.", entry: "Neckline ke upar close ya breakout ke baad retest hold.", stopLoss: "Right shoulder ke neeche ya retest low ke neeche.", target: "Head-to-neckline distance breakout ke upar project karo.", confirmation: "Neckline ke through strong close aur volume expansion.", invalidation: "Neckline ke neeche clean close.", mistake: "Jab neckline abhi resistance ho tab buy karna." },
+        "double-top": { structure: "Do similar highs aur unke beech valley.", description: "Same resistance par do failed attempts ke baad breakdown.", psychology: "Buyers resistance ke upar price accept nahi kar paate, isliye valley ke neeche trapped longs exit karte hain.", entry: "Valley low ke neeche break aur close.", stopLoss: "Second top ke upar.", target: "Top-to-valley height ko downside me project karo.", confirmation: "Second top quickly reject ho aur breakdown me momentum ho.", invalidation: "Dono tops ke upar close.", mistake: "Valley break se pehle ise double top bolna." },
+        "double-bottom": { structure: "Do similar lows aur middle peak neckline.", description: "Support todne ki do failed attempts ke baad bullish breakout.", psychology: "Sellers same floor par do baar fail hote hain; breakout shorts ko cover karne par force karta hai.", entry: "Middle peak ke upar break aur close.", stopLoss: "Second bottom ke neeche.", target: "Bottom-to-neckline height ko upside me project karo.", confirmation: "Second bottom stronger buying pressure ke saath reject ho.", invalidation: "Dono bottoms ke neeche close.", mistake: "Neckline confirmation se pehle second low buy karna." },
+        "triple-top": { structure: "Similar resistance shelf se teen rejections.", description: "Larger topping pattern jo support break ke baad active hota hai.", psychology: "Distribution build hoti hai kyunki har rally resistance par supply se milti hai.", entry: "Range support ke neeche close.", stopLoss: "Third top ke upar.", target: "Range height support ke neeche project karo.", confirmation: "Third rejection weaker ho aur breakdown low ke paas close ho.", invalidation: "Resistance shelf ke upar close.", mistake: "Breakdown ke bina range ke andar short karna." },
+        "triple-bottom": { structure: "Similar support shelf se teen rejections.", description: "Larger bottoming pattern jo resistance break ke baad active hota hai.", psychology: "Accumulation build hoti hai kyunki sellers repeatedly support ke neeche push karne me fail hote hain.", entry: "Range resistance ke upar close.", stopLoss: "Third bottom ke neeche.", target: "Range height resistance ke upar project karo.", confirmation: "Third test quickly hold kare aur breakout me volume ho.", invalidation: "Support shelf ke neeche close.", mistake: "Range resistance break hone se pehle buy karna." },
+        "bull-flag": { structure: "Sharp impulse pole ke baad small downward ya sideways channel.", description: "Continuation se pehle controlled profit-taking ke through trend pause hota hai.", psychology: "Early buyers profit lete hain, par sellers impulse reverse nahi kar paate.", entry: "Flag resistance ke upar break aur close.", stopLoss: "Flag low ke neeche ya last higher low ke neeche.", target: "Pole length breakout se project karo.", confirmation: "Flag shallow rahe aur breakout volume expand ho.", invalidation: "Flag base ke neeche close.", mistake: "Aisi flag buy karna jo bahut deep retrace ho chuki ho." },
+        "bear-flag": { structure: "Sharp impulse drop ke baad small upward ya sideways channel.", description: "Continuation se pehle short covering ke through downtrend pause hota hai.", psychology: "Short covering price lift karti hai, par buyers impulse breakdown reclaim nahi kar paate.", entry: "Flag support ke neeche break aur close.", stopLoss: "Flag high ke upar ya last lower high ke upar.", target: "Pole length breakdown se project karo.", confirmation: "Flag shallow rahe aur breakdown volume expand ho.", invalidation: "Flag base ke upar close.", mistake: "Major support hit hone ke baad flag short karna." },
+        "ascending-triangle": { structure: "Flat resistance aur rising lows supply me press karte hain.", description: "Compression pattern jahan buyers resistance ke neeche more aggressive hote hain.", psychology: "Sellers ek level defend karte hain, par buyers higher prices accept karte rehte hain.", entry: "Flat resistance ke upar close ya retest hold.", stopLoss: "Last higher low ke neeche.", target: "Triangle height upward project karo.", confirmation: "Breakout candle volume ke saath resistance ke upar close kare.", invalidation: "Rising trendline ke neeche break.", mistake: "Price resistance clear karne se pehle buy karna." },
+        "descending-triangle": { structure: "Flat support aur lower highs demand me press karte hain.", description: "Compression pattern jahan sellers support ke upar more aggressive hote hain.", psychology: "Buyers ek level defend karte hain, par sellers lower prices accept karte rehte hain.", entry: "Flat support ke neeche close ya retest failure.", stopLoss: "Last lower high ke upar.", target: "Triangle height downward project karo.", confirmation: "Breakdown candle volume ke saath support ke neeche close kare.", invalidation: "Falling trendline ke upar break.", mistake: "Support actually lose hone se pehle short karna." },
+        "symmetrical-triangle": { structure: "Lower highs aur higher lows apex me compress hote hain.", description: "Volatility compression pattern jo kisi bhi direction me break kar sakta hai.", psychology: "Dono sides commitment reduce karte hain jab tak breakout next move force nahi karta.", entry: "Kisi bhi trendline ke bahar close, ideally final apex se pehle.", stopLoss: "Triangle ki opposite side ke andar.", target: "Widest triangle height breakout se project karo.", confirmation: "Range aur volume ke saath expansion candle.", invalidation: "Breakout triangle ke andar wapas close ho jaye.", mistake: "Break ka wait karne ke bajay direction predict karna." },
+        "cup-handle": { structure: "Rounded base, resistance par return, phir smaller handle pullback.", description: "Long accumulation structure ke baad controlled shakeout.", psychology: "Cup ke through supply dry hoti hai, phir handle late buyers ko remove karta hai before breakout.", entry: "Handle resistance ke upar break.", stopLoss: "Handle low ke neeche.", target: "Cup depth upward project karo.", confirmation: "Rounded cup, shallow handle, aur breakout volume.", invalidation: "Handle cup ke midpoint ke neeche break ho.", mistake: "V-shaped bounce ko cup maan lena." },
+        "rising-wedge": { structure: "Narrowing upward channel ke andar higher highs aur higher lows.", description: "Price rise karta hai, par har push me momentum kam hota jata hai.", psychology: "Buyers price lift karte rehte hain, par demand weak hoti hai aur late longs vulnerable hote hain.", entry: "Wedge support ke neeche break aur close.", stopLoss: "Last wedge high ke upar.", target: "Wedge base ya measured height.", confirmation: "Bearish divergence ya strong support loss.", invalidation: "Wedge resistance ke upar wapas close.", mistake: "Support hold karte waqt wedge short karna." },
+        "falling-wedge": { structure: "Narrowing downward channel ke andar lower highs aur lower lows.", description: "Price fall karta hai, par har sell-off me momentum kam hota jata hai.", psychology: "Sellers lower push karte rehte hain, par supply weak hoti hai aur shorts vulnerable hote hain.", entry: "Wedge resistance ke upar break aur close.", stopLoss: "Last wedge low ke neeche.", target: "Wedge base ya measured height.", confirmation: "Bullish divergence ya strong resistance reclaim.", invalidation: "Wedge support ke neeche wapas close.", mistake: "Wedge resistance break hone se pehle buy karna." },
+        "rectangle": { structure: "Horizontal support aur resistance price ko contain karte hain.", description: "Balanced auction jo tab useful hoti hai jab ek side range ke bahar price accept karti hai.", psychology: "Dono sides known levels defend karte hain jab tak breakout inventory change nahi karta.", entry: "Breakout close aur retest, ya range hold kare to extremes fade karo.", stopLoss: "Breakout ki opposite side ya range extreme ke beyond.", target: "Range height breakout se project karo.", confirmation: "Follow-through ke saath range ke bahar close.", invalidation: "Failed breakout range ke andar wapas.", mistake: "Range ke middle me trade karna." },
+        "pennant": { structure: "Fast impulse pole ke baad small symmetrical compression.", description: "Compact continuation pattern jo zyada der sideways drift nahi karna chahiye.", psychology: "Impulse briefly pause hota hai, phir trend traders continuation dhoondte hain.", entry: "Pole ki direction me break.", stopLoss: "Pennant ki opposite side.", target: "Pole breakout se project karo.", confirmation: "Pennant tight, short-lived, aur momentum ke saath break ho.", invalidation: "Pole direction ke against break.", mistake: "Strong pole ke bina har tiny triangle ko pennant bolna." }
+    },
+    indicators: {
+        rsi: { description: "Recent gains versus losses ki speed measure karta hai.", useCase: "Overbought/oversold context, divergence, aur momentum regime.", settings: "14 period; 70/30 classic, strong trends ke liye 80/20.", confirmation: "Structure, trendline breaks, aur divergence ke saath best kaam karta hai.", mistake: "Strong uptrend me RSI 70 ke upar aate hi har baar short karna." },
+        ema: { description: "Weighted moving average jo recent price par faster react karta hai.", useCase: "Trend direction, dynamic support/resistance, aur pullback zones.", settings: "Short trend ke liye 20 EMA, swing ke liye 50 EMA, macro filter ke liye 200 EMA.", confirmation: "Slope, candle reaction, aur higher timeframe alignment.", mistake: "Price action confirmation ke bina har touch ko support maan lena." },
+        sma: { description: "Fixed number of candles ka average price.", useCase: "Long-term trend filter aur mean reversion context.", settings: "50 SMA, 100 SMA, 200 SMA.", confirmation: "Liquid markets aur higher timeframes par best kaam karta hai.", mistake: "Itni averages use karna ki chart noisy ho jaye." },
+        macd: { description: "Do moving averages ke relationship ko show karta hai.", useCase: "Momentum shifts, crossovers, aur histogram expansion.", settings: "12, 26, 9 standard.", confirmation: "Structure breakout ke saath histogram zero cross kare.", mistake: "Move extended hone ke baad late crossovers ko entry banana." },
+        bollinger: { description: "Standard deviation ke basis par moving average ke around bands.", useCase: "Volatility expansion, squeeze, mean reversion, aur trend riding.", settings: "20 period, 2 standard deviations.", confirmation: "Volume ke saath band squeeze breakout.", mistake: "Strong trend expansion me upper band ko blindly fade karna." },
+        atr: { description: "Average True Range normal price movement estimate karta hai.", useCase: "Stop distance, target planning, aur volatility regime.", settings: "14 period standard.", confirmation: "Structure ke saath use karo taki stops bahut tight na hon.", mistake: "ATR ko direction signal banana; ye movement measure karta hai, bias nahi." },
+        vwap: { description: "Session ka volume-weighted average price.", useCase: "Intraday fair value, mean reversion, aur trend validation.", settings: "Session VWAP; events ya swing lows ke liye anchored VWAP.", confirmation: "Price VWAP ke upar hold kare to bullish intraday bias support hota hai.", mistake: "Higher timeframe swing trades par context ke bina regular VWAP use karna." },
+        volume: { description: "Candle ke during kitni trading activity hui ye dikhata hai.", useCase: "Breakouts, exhaustion, absorption, aur accumulation confirm karna.", settings: "Raw volume plus 20-period volume average.", confirmation: "Volume average se upar expand ho to breakouts stronger hote hain.", mistake: "Market-specific volume quality aur session timing ignore karna." },
+        stochastic: { description: "Close ko recent high-low range se compare karta hai.", useCase: "Ranges ya slower trends me pullback timing.", settings: "14, 3, 3 standard.", confirmation: "Range extremes ke paas support/resistance ke saath crossovers use karo.", mistake: "Har overbought reading ko sell signal samajhna." },
+        adx: { description: "Trend strength measure karta hai, direction nahi batata.", useCase: "Trend strategies ko range strategies se filter karna.", settings: "14 period; 25 ke upar aksar stronger trend hota hai.", confirmation: "Direction ke liye moving averages ya structure ke saath pair karo.", mistake: "Bhool jana ki ADX uptrend aur downtrend dono me rise kar sakta hai." },
+        fibonacci: { description: "Swing high aur swing low ke beech common pullback zones map karta hai.", useCase: "Support, resistance, trendlines, aur candles ke saath confluence.", settings: "38.2%, 50%, 61.8%, 78.6%.", confirmation: "Structure ke paas fib level par candle rejection.", mistake: "Unclear ya tiny swings par fibs draw karna." },
+        ichimoku: { description: "Trend, momentum, aur support/resistance ke liye multi-line system.", useCase: "Trend qualification, cloud support, aur momentum confirmation.", settings: "9, 26, 52 standard.", confirmation: "Price cloud ke upar, Tenkan Kijun ke upar, aur Chikou confirmation.", mistake: "Higher timeframe context ke bina mechanically use karna." }
+    },
+    strategies: {
+        "trend-pullback": { description: "Confirmed trend ki direction me controlled pullback ke baad trade karo.", setup: "Longs ke liye higher highs aur higher lows; shorts ke liye lower highs aur lower lows.", trigger: "Moving average ya structure par engulfing candle, pin bar, ya inside bar breakout.", risk: "Stop pullback swing ke beyond, target next impulse leg.", avoid: "Jab pullback market structure break kare to avoid karo." },
+        "breakout-retest": { description: "Price level break kare, uska retest kare, phir continue kare - is wait ko use karo.", setup: "Multiple touches ke saath clear horizontal support ya resistance.", trigger: "Retest rejection candle ya bullish/bearish engulfing.", risk: "Stop retest extreme ke beyond, target measured range.", avoid: "Breakout candle bahut large ho aur retest far away ho to avoid karo." },
+        "failed-breakout": { description: "Aise breakout ke against trade karo jo quickly old range ke andar wapas aa jaye.", setup: "Price prior high/low sweep kare aur range ke andar wapas close ho.", trigger: "Pin bar, engulfing candle, ya level ke through strong close back.", risk: "Stop sweep extreme ke beyond, target range ki opposite side.", avoid: "Strong news-driven trend days ke against avoid karo." },
+        "opening-range": { description: "First session range ko decision zone ke roop me use karo.", setup: "First 15 to 60 minutes ka high aur low define karo.", trigger: "Volume aur VWAP alignment ke saath range ke bahar close.", risk: "Stop range ke andar ya retest ke beyond.", avoid: "Low-volume sessions aur confirmation ke bina fakeouts avoid karo." },
+        "mean-reversion": { description: "Jab price stretched ho aur structure mean par return support kare, extremes fade karo.", setup: "Range-bound market jahan price support ya resistance par ho.", trigger: "Rejection candle plus RSI divergence ya Bollinger Band rejection.", risk: "Stop range extreme ke beyond, target pehle midpoint.", avoid: "Trend strength high ho ya ADX sharply rise kar raha ho to avoid karo." },
+        "multi-timeframe": { description: "Higher timeframe bias aur lower timeframe trigger use karo.", setup: "Weekly/daily direction define kare, H4/H1 zone define kare, M15/M5 entry define kare.", trigger: "Higher timeframe zone par market structure shift.", risk: "Stop entry timeframe invalidation ke beyond, target higher timeframe level.", avoid: "Lower timeframe signal higher timeframe trend ke against ho to avoid karo." },
+        "liquidity-sweep": { description: "Price obvious highs ya lows take karke reject kare uske baad trade karo.", setup: "Visible equal highs/lows, prior day high/low, ya range extreme.", trigger: "Sweep plus close back inside aur follow-through candle.", risk: "Stop sweep wick ke beyond, target internal liquidity ya opposite range.", avoid: "Jab sweep accepted breakout me turn ho jaye to avoid karo." },
+        "risk-first": { description: "Profit sochne se pehle har trade invalidation aur reward se build karo.", setup: "Order se pehle clear entry, stop, target, aur maximum loss defined ho.", trigger: "Sirf tab execute karo jab reward risk se kam se kam 1.5 to 2 times ho.", risk: "Consistent hone tak per trade 0.25% to 1% risk rakho.", avoid: "Revenge trades, stops wider move karna, aur losers me add karna avoid karo." }
+    },
+    roadmapSteps: [
+        { title: "Level 1: Market Basics", items: ["Candlestick anatomy", "Bid, ask, spread, liquidity", "Trend, range, aur volatility", "Timeframe selection"] },
+        { title: "Level 2: Price Action", items: ["Support aur resistance", "Market structure", "Candlestick psychology", "Breakout aur retest logic"] },
+        { title: "Level 3: Pattern Mastery", items: ["Single, double, aur triple candles", "Chart pattern measurement", "Confirmation aur invalidation", "Pattern failure analysis"] },
+        { title: "Level 4: Risk Management", items: ["Position sizing", "Risk reward planning", "Max daily loss", "Correlation aur exposure control"] },
+        { title: "Level 5: Strategy Building", items: ["Trend pullbacks", "Range reversions", "Breakout playbooks", "Multi-timeframe execution"] },
+        { title: "Level 6: Professional Process", items: ["Trading journal", "Psychology review", "Weekly playbook audit", "Data-driven improvement"] }
+    ],
+    glossary: {
+        Support: { definition: "Price area jahan demand pehle selling ko pause ya reverse karne ke liye strong rahi hai." },
+        Resistance: { definition: "Price area jahan supply pehle buying ko pause ya reverse karne ke liye strong rahi hai." },
+        Liquidity: { definition: "Kisi price par orders ki availability. Obvious highs aur lows aksar liquidity attract karte hain." },
+        "Market Structure": { definition: "Swing highs aur lows ki sequence jo trend ya range behavior define karti hai." },
+        "Higher High": { definition: "Swing high jo previous swing high ke upar form hota hai, aksar uptrend ka part." },
+        "Lower Low": { definition: "Swing low jo previous swing low ke neeche form hota hai, aksar downtrend ka part." },
+        "Break of Structure": { definition: "Prior swing level ke through decisive move jo market map change karta hai." },
+        Retest: { definition: "Price broken level par wapas aata hai check karne ke liye ki role flip hua ya nahi." },
+        Invalidation: { definition: "Woh price level jahan tumhari trade idea wrong prove hoti hai." },
+        "Risk Reward": { definition: "Trade par possible loss aur possible gain ka relationship." },
+        "R Multiple": { definition: "Risk units me measured result. 2R win risked amount ka double earn karti hai." },
+        ATR: { definition: "Average True Range, ek tool jo normal candle movement estimate karta hai." },
+        Divergence: { definition: "Jab price new extreme banata hai par oscillator usko confirm nahi karta." },
+        Confluence: { definition: "Multiple independent reasons jo same trade idea support karte hain." },
+        Absorption: { definition: "Large buying ya selling pressure opposite side absorb kar leti hai bina zyada price progress ke." },
+        Distribution: { definition: "Phase jahan stronger hands highs ke paas demand me sell kar sakte hain." },
+        Accumulation: { definition: "Phase jahan stronger hands lows ke paas supply me buy kar sakte hain." },
+        VWAP: { definition: "Volume Weighted Average Price, intraday fair value ke roop me aksar use hota hai." },
+        "Stop Hunt": { definition: "Obvious stops ke through move jo breakout accept na ho to quickly reverse ho sakta hai." },
+        Drawdown: { definition: "Account peak se later low tak ka decline." },
+        "Win Rate": { definition: "Trades ka percentage jo profitably close hota hai." },
+        Expectancy: { definition: "Win rate aur average win/loss consider karne ke baad per trade average outcome." },
+        Slippage: { definition: "Expected execution price aur actual execution price ke beech ka difference." },
+        "Position Size": { definition: "Risk aur stop distance ke basis par chosen units, shares, ya contracts ki quantity." }
+    },
+    checklistItems: [
+        "Higher timeframe bias clear hai",
+        "Setup support, resistance, trendline, VWAP, ya demand/supply par hai",
+        "Entry trigger visible hai aur close ho chuka hai",
+        "Entry se pehle invalidation level defined hai",
+        "Reward kam se kam 1.5R hai",
+        "Position size risk limit ke match me hai",
+        "Koi major emotional impulse trade drive nahi kar raha",
+        "Execution se pehle trade note ready hai"
+    ]
+};
+
+applyHinglishCopy();
+
 const appState = {
     activeSection: "candlesticksSection",
     activeChartFilter: "all",
@@ -138,6 +265,29 @@ const appState = {
 
 const moneyFormatter = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 const numberFormatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: 4 });
+const labelTranslations = {
+    "Single Candlestick": "Single Candle",
+    "Double Candlestick": "Double Candle",
+    "Triple Candlestick": "Triple Candle",
+    "Bullish Reversal": "Bullish Reversal",
+    "Bearish Reversal": "Bearish Reversal",
+    Continuation: "Continuation",
+    Indecision: "Indecision",
+    Beginner: "Beginner",
+    Intermediate: "Intermediate",
+    Advanced: "Advanced",
+    "Bullish/Bearish": "Bullish/Bearish",
+    Bullish: "Bullish",
+    Bearish: "Bearish",
+    Neutral: "Neutral",
+    reversal: "Reversal",
+    continuation: "Continuation",
+    bilateral: "Bilateral",
+    indicator: "Indicator",
+    strategy: "Strategy",
+    Knowledge: "Knowledge",
+    Glossary: "Glossary"
+};
 
 const dom = {};
 
@@ -268,13 +418,13 @@ function renderCandlesticks() {
 
     dom.patternGrid.innerHTML = "";
     if (!filtered.length) {
-        dom.patternGrid.appendChild(emptyState("No candlestick patterns match the current filters."));
+        dom.patternGrid.appendChild(emptyState("Current filters se koi candlestick pattern match nahi ho raha."));
     } else {
         filtered.forEach((pattern) => dom.patternGrid.appendChild(createPatternCard(pattern)));
     }
 
     const resultCount = document.getElementById("patternResultCount");
-    resultCount.textContent = `${filtered.length} visible`;
+    resultCount.textContent = `${filtered.length} dikh rahe hain`;
 }
 
 function renderChartPatterns() {
@@ -286,13 +436,13 @@ function renderChartPatterns() {
 
     dom.chartPatternGrid.innerHTML = "";
     if (!filtered.length) {
-        dom.chartPatternGrid.appendChild(emptyState("No chart patterns match the current filters."));
+        dom.chartPatternGrid.appendChild(emptyState("Current filters se koi chart pattern match nahi ho raha."));
     } else {
         filtered.forEach((pattern) => dom.chartPatternGrid.appendChild(createChartPatternCard(pattern)));
     }
 
     const resultCount = document.getElementById("chartPatternResultCount");
-    resultCount.textContent = `${filtered.length} visual setups`;
+    resultCount.textContent = `${filtered.length} visual setups dikh rahe hain`;
 }
 
 function renderIndicators() {
@@ -301,7 +451,7 @@ function renderIndicators() {
 
     dom.indicatorGrid.innerHTML = "";
     if (!filtered.length) {
-        dom.indicatorGrid.appendChild(emptyState("No indicators match the current search."));
+        dom.indicatorGrid.appendChild(emptyState("Current search se koi indicator match nahi ho raha."));
     } else {
         filtered.forEach((indicator) => dom.indicatorGrid.appendChild(createKnowledgeCard(indicator, "indicator")));
     }
@@ -313,7 +463,7 @@ function renderStrategies() {
 
     dom.strategyGrid.innerHTML = "";
     if (!filtered.length) {
-        dom.strategyGrid.appendChild(emptyState("No playbooks match the current search."));
+        dom.strategyGrid.appendChild(emptyState("Current search se koi playbook match nahi ho raha."));
     } else {
         filtered.forEach((strategy) => dom.strategyGrid.appendChild(createKnowledgeCard(strategy, "strategy")));
     }
@@ -341,7 +491,7 @@ function renderGlossary() {
 
     dom.glossaryGrid.innerHTML = "";
     if (!filtered.length) {
-        dom.glossaryGrid.appendChild(emptyState("No glossary terms match the current search."));
+        dom.glossaryGrid.appendChild(emptyState("Current search se koi glossary term match nahi ho raha."));
     } else {
         filtered.forEach((item) => {
             const card = document.createElement("article");
@@ -366,13 +516,13 @@ function createPatternCard(pattern) {
     const sentiment = sentimentClass(pattern.sentiment);
     card.className = `card pattern-card ${sentiment}`;
     card.innerHTML = `
-        <button type="button" class="favorite-btn ${appState.favorites.has(pattern.id) ? "active" : ""}" aria-label="Toggle favorite" aria-pressed="${appState.favorites.has(pattern.id)}" title="Toggle favorite">${appState.favorites.has(pattern.id) ? "Saved" : "Save"}</button>
+        <button type="button" class="favorite-btn ${appState.favorites.has(pattern.id) ? "active" : ""}" aria-label="Favorite toggle karo" aria-pressed="${appState.favorites.has(pattern.id)}" title="Favorite toggle karo">${appState.favorites.has(pattern.id) ? "Saved" : "Save"}</button>
         <div class="mini-viz">${generateSVG(pattern.viz, sentiment, 118)}</div>
         <h3>${pattern.name}</h3>
         <div class="tag-row">
-            <span class="tag">${pattern.category}</span>
-            <span class="sentiment-pill ${sentiment}">${pattern.sentiment}</span>
-            <span class="level-pill">${pattern.difficulty}</span>
+            <span class="tag">${displayLabel(pattern.category)}</span>
+            <span class="sentiment-pill ${sentiment}">${displayLabel(pattern.sentiment)}</span>
+            <span class="level-pill">${displayLabel(pattern.difficulty)}</span>
         </div>
         <p>${appState.advanced ? pattern.meaning : pattern.beginnerExplanation}</p>
         <div class="card-footer">
@@ -399,12 +549,12 @@ function createKnowledgeCard(item, kind) {
     const description = item.description || item.setup || item.definition;
     card.className = "card";
     card.innerHTML = `
-        <span class="tag">${label}</span>
+        <span class="tag">${displayLabel(label)}</span>
         <h3>${title}</h3>
         <p>${description}</p>
         <div class="card-footer">
-            <span class="sentiment-pill ${sentiment}">${item.sentiment || kind}</span>
-            <span class="tag">${kind}</span>
+            <span class="sentiment-pill ${sentiment}">${displayLabel(item.sentiment || kind)}</span>
+            <span class="tag">${displayLabel(kind)}</span>
         </div>
     `;
     activateCard(card, () => showGenericModal(item));
@@ -419,8 +569,8 @@ function createChartPatternCard(pattern) {
         <div class="chart-pattern-viz">${generateChartPatternSVG(pattern.id, 320, 178)}</div>
         <h3>${pattern.name}</h3>
         <div class="tag-row">
-            <span class="tag">${pattern.type}</span>
-            <span class="sentiment-pill ${sentiment}">${pattern.sentiment}</span>
+            <span class="tag">${displayLabel(pattern.type)}</span>
+            <span class="sentiment-pill ${sentiment}">${displayLabel(pattern.sentiment)}</span>
             <span class="level-pill">${pattern.timeframe}</span>
         </div>
         <p>${pattern.description}</p>
@@ -457,9 +607,9 @@ function showPatternModal(pattern) {
                 <div class="candle-viz">${generateSVG(pattern.viz, sentiment, 210)}</div>
                 <div>
                     <div class="tag-row">
-                        <span class="tag">${pattern.category}</span>
-                        <span class="sentiment-pill ${sentiment}">${pattern.sentiment}</span>
-                        <span class="level-pill">${pattern.difficulty}</span>
+                        <span class="tag">${displayLabel(pattern.category)}</span>
+                        <span class="sentiment-pill ${sentiment}">${displayLabel(pattern.sentiment)}</span>
+                        <span class="level-pill">${displayLabel(pattern.difficulty)}</span>
                     </div>
                 </div>
                 <div class="info-section">
@@ -470,7 +620,7 @@ function showPatternModal(pattern) {
             <div>
                 <span class="eyebrow">${pattern.timeframe}</span>
                 <h2>${pattern.name}</h2>
-                ${infoBlock("Meaning", appState.advanced ? pattern.meaning : pattern.beginnerExplanation)}
+                ${infoBlock("Matlab", appState.advanced ? pattern.meaning : pattern.beginnerExplanation)}
                 ${infoBlock("Market Psychology", pattern.psychology)}
                 ${infoBlock("Rules", pattern.rules)}
                 ${infoBlock("Best Use", pattern.useCase)}
@@ -507,7 +657,7 @@ function showGenericModal(item) {
     dom.modalBody.dataset.currentPattern = "";
     dom.modalBody.innerHTML = `
         <div>
-            <span class="eyebrow">${item.category || item.type || "Knowledge"}</span>
+            <span class="eyebrow">${displayLabel(item.category || item.type || "Knowledge")}</span>
             <h2>${item.name || item.term}</h2>
             ${chartVisual}
             ${blocks.map(([title, value]) => infoBlock(title, value)).join("")}
@@ -523,6 +673,24 @@ function infoBlock(title, value) {
 
 function reliabilityBars(score) {
     return `<div class="reliability-bars" aria-label="Reliability ${score} out of 5">${Array.from({ length: 5 }, (_, index) => `<span class="${index < score ? "on" : ""}"></span>`).join("")}</div>`;
+}
+
+function displayLabel(label) {
+    return labelTranslations[label] || label;
+}
+
+function applyHinglishCopy() {
+    mergeLocalizedItems(patterns, hinglishCopy.patterns);
+    mergeLocalizedItems(chartPatterns, hinglishCopy.chartPatterns);
+    mergeLocalizedItems(indicators, hinglishCopy.indicators);
+    mergeLocalizedItems(strategies, hinglishCopy.strategies);
+    roadmapSteps.forEach((step, index) => Object.assign(step, hinglishCopy.roadmapSteps[index] || {}));
+    glossary.forEach((item) => Object.assign(item, hinglishCopy.glossary[item.term] || {}));
+    checklistItems.splice(0, checklistItems.length, ...hinglishCopy.checklistItems);
+}
+
+function mergeLocalizedItems(items, localizedById) {
+    items.forEach((item) => Object.assign(item, localizedById[item.id] || {}));
 }
 
 function sentimentClass(sentiment) {
@@ -634,7 +802,7 @@ function calculatePosition() {
     const output = document.getElementById("calcResults");
 
     if (balance <= 0 || riskPct <= 0 || entry <= 0 || stop <= 0 || entry === stop) {
-        output.innerHTML = `<p class="result-item">Enter valid balance, risk, entry, and stop.</p>`;
+        output.innerHTML = `<p class="result-item">Valid balance, risk, entry, aur stop enter karo.</p>`;
         return;
     }
 
@@ -661,7 +829,7 @@ function calculateRiskReward() {
     const reward = direction === "long" ? target - entry : entry - target;
 
     if (entry <= 0 || stop <= 0 || target <= 0 || risk <= 0 || reward <= 0) {
-        output.innerHTML = `<p class="result-item">Enter valid entry, stop, target, and direction.</p>`;
+        output.innerHTML = `<p class="result-item">Valid entry, stop, target, aur direction enter karo.</p>`;
         return;
     }
 
@@ -683,7 +851,7 @@ function calculateCompound() {
     const output = document.getElementById("compoundResults");
 
     if (capital <= 0 || months <= 0) {
-        output.innerHTML = `<p class="result-item">Enter valid capital and months.</p>`;
+        output.innerHTML = `<p class="result-item">Valid capital aur months enter karo.</p>`;
         return;
     }
 
@@ -724,14 +892,14 @@ function updateReadiness() {
     const checked = checks.filter((input) => input.checked).map((input) => Number(input.dataset.index));
     writeStorage("tradeChecklist", JSON.stringify(checked));
     const score = checks.length ? Math.round((checked.length / checks.length) * 100) : 0;
-    document.getElementById("readinessScore").textContent = `Readiness: ${score}%`;
+    document.getElementById("readinessScore").textContent = `Tayyari: ${score}%`;
 }
 
 function saveJournal() {
     const note = document.getElementById("journalNote").value.trim();
     writeStorage("tradeJournalNote", note);
     const status = document.getElementById("journalStatus");
-    status.textContent = "Saved locally.";
+    status.textContent = "Locally save ho gaya.";
     setTimeout(() => {
         status.textContent = "";
     }, 1600);
@@ -756,8 +924,8 @@ function renderQuizQuestion() {
         dom.quizBody.innerHTML = `
             <span class="eyebrow">Pattern quiz</span>
             <h2>Score: ${quiz.score}/${quiz.total}</h2>
-            <p class="info-section">Review the patterns you missed and repeat the quiz after studying confirmation rules.</p>
-            <button type="button" class="primary-btn" id="restartQuizBtn">Restart Quiz</button>
+            <p class="info-section">Jo patterns miss hue unhe review karo, phir confirmation rules study karke quiz repeat karo.</p>
+            <button type="button" class="primary-btn" id="restartQuizBtn">Quiz Restart Karo</button>
         `;
         document.getElementById("restartQuizBtn").addEventListener("click", startQuiz);
         return;
@@ -769,8 +937,8 @@ function renderQuizQuestion() {
     quiz.asked += 1;
 
     dom.quizBody.innerHTML = `
-        <span class="eyebrow">Question ${quiz.asked} of ${quiz.total}</span>
-        <h2>Identify this pattern</h2>
+        <span class="eyebrow">Question ${quiz.asked}/${quiz.total}</span>
+        <h2>Is pattern ko identify karo</h2>
         <div class="candle-viz">${generateSVG(correct.viz, sentimentClass(correct.sentiment), 190)}</div>
         <div id="quizOptions">
             ${options.map((option) => `<button type="button" class="quiz-option" data-id="${option.id}">${option.name}</button>`).join("")}
@@ -797,7 +965,7 @@ function answerQuiz(button) {
 
     const feedback = document.getElementById("quizFeedback");
     feedback.innerHTML = `
-        <h4>${isCorrect ? "Correct" : "Review"}</h4>
+        <h4>${isCorrect ? "Sahi" : "Review"}</h4>
         <p>${quiz.current.name}: ${quiz.current.beginnerExplanation}</p>
         <button type="button" class="primary-btn" id="nextQuizBtn">Next</button>
     `;
@@ -840,7 +1008,7 @@ function drawMarketCanvas() {
     const scaleY = (value) => height - padding - ((value - min) / (max - min)) * (height - padding * 2);
     const spacing = (width - padding * 2) / candles.length;
 
-    context.strokeStyle = "rgba(29,29,31,0.08)";
+    context.strokeStyle = "rgba(212,220,232,0.12)";
     context.lineWidth = 1;
     for (let i = 0; i < 5; i += 1) {
         const y = padding + i * ((height - padding * 2) / 4);
@@ -850,7 +1018,7 @@ function drawMarketCanvas() {
         context.stroke();
     }
 
-    context.strokeStyle = "rgba(0,113,227,0.34)";
+    context.strokeStyle = "rgba(77,163,255,0.5)";
     context.lineWidth = 2;
     context.beginPath();
     context.moveTo(padding, scaleY(82));
@@ -860,7 +1028,7 @@ function drawMarketCanvas() {
     candles.forEach(([open, high, low, close], index) => {
         const x = padding + index * spacing + spacing / 2;
         const bullish = close >= open;
-        const color = bullish ? "#00a878" : "#ff3b30";
+        const color = bullish ? "#22c55e" : "#ff5c65";
         const yOpen = scaleY(open);
         const yClose = scaleY(close);
         const yHigh = scaleY(high);
@@ -879,18 +1047,18 @@ function drawMarketCanvas() {
         context.fillRect(x - bodyWidth / 2, bodyTop, bodyWidth, bodyHeight);
     });
 
-    context.fillStyle = "rgba(0,113,227,0.96)";
+    context.fillStyle = "rgba(117,185,255,0.98)";
     context.font = "700 13px system-ui, sans-serif";
     context.fillText("Breakout zone", padding, scaleY(109) - 10);
 }
 
 function generateChartPatternSVG(id, width = 320, height = 178) {
-    const blue = "#0071e3";
-    const green = "#00a878";
-    const red = "#ff3b30";
-    const ink = "#2f3642";
-    const muted = "#8a8f98";
-    const grid = "rgba(29,29,31,0.08)";
+    const blue = "#4da3ff";
+    const green = "#22c55e";
+    const red = "#ff5c65";
+    const ink = "#d8dee9";
+    const muted = "#9aa4b2";
+    const grid = "rgba(212,220,232,0.12)";
     const bullish = ["inverse-head-shoulders", "double-bottom", "triple-bottom", "bull-flag", "ascending-triangle", "cup-handle", "falling-wedge"].includes(id);
     const bearish = ["head-shoulders", "double-top", "triple-top", "bear-flag", "descending-triangle", "rising-wedge"].includes(id);
     const accent = bullish ? green : bearish ? red : blue;
@@ -966,11 +1134,11 @@ function pathCurve(d, color) {
 }
 
 function generateSVG(type, sentiment, size = 150) {
-    const color = sentiment === "bullish" ? "#00a878" : sentiment === "bearish" ? "#ff3b30" : "#7b8492";
-    const green = "#00a878";
-    const red = "#ff3b30";
-    const gray = "#7b8492";
-    const wick = (x, y1, y2, stroke = "#30343b") => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${stroke}" stroke-width="3" stroke-linecap="round"/>`;
+    const color = sentiment === "bullish" ? "#22c55e" : sentiment === "bearish" ? "#ff5c65" : "#9aa4b2";
+    const green = "#22c55e";
+    const red = "#ff5c65";
+    const gray = "#9aa4b2";
+    const wick = (x, y1, y2, stroke = "#cbd5e1") => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${stroke}" stroke-width="3" stroke-linecap="round"/>`;
     const body = (x, y, h, fill, w = 22) => `<rect x="${x}" y="${y}" width="${w}" height="${Math.max(h, 4)}" rx="3" fill="${fill}"/>`;
     const candle = (x, top, bottom, bodyTop, bodyHeight, fill) => `${wick(x + 11, top, bottom)}${body(x, bodyTop, bodyHeight, fill)}`;
     let svg = "";
